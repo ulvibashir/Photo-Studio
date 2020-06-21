@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Alert, Text } from "react-native";
 import { connect } from "react-redux";
 
 import { signUp, signIn } from "../../store/auth";
@@ -8,15 +8,28 @@ import { Field, RadioBtn, Btn } from "../../components";
 const options = ["Sign In", "Sign Up"];
 
 export const Auth = connect(null, { signUp, signIn })(({ signUp, signIn }) => {
+  const [error, setError] = useState("");
   const [signType, setSignType] = useState(options[0]);
   const [fields, setFields] = useState({
-    email: "test7@test.com",
-    password: "123qwert",
+    email: "",
+    password: "",
     name: "",
     surname: "",
     repassword: "",
   });
 
+  const validation = () => {
+    for (let key of Object.keys(fields)) {
+      if (fields[key].trim() === "") {
+        setError(`Please, write your ${key}.`);
+        return false;
+      }
+    }
+  
+    if (fields.password !== fields.repassword && signType == "Sign Up") {
+      setError("Confirm your password.");
+    }
+  };
   const handleFieldChange = (name, value) => {
     setFields((fields) => ({
       ...fields,
@@ -24,10 +37,12 @@ export const Auth = connect(null, { signUp, signIn })(({ signUp, signIn }) => {
     }));
   };
   const submit = () => {
-    if (signType == "Sign In") {
-      signIn(fields);
-    } else {
-      signUp(fields);
+    if (validation()) {
+      if (signType == "Sign In") {
+        signIn(fields);
+      } else {
+        signUp(fields);
+      }
     }
   };
   return (
@@ -49,6 +64,7 @@ export const Auth = connect(null, { signUp, signIn })(({ signUp, signIn }) => {
           />
           <Field
             value={fields.password}
+            secureTextEntry={true}
             onChangeText={(v) => {
               handleFieldChange("password", v);
             }}
@@ -80,13 +96,23 @@ export const Auth = connect(null, { signUp, signIn })(({ signUp, signIn }) => {
           />
           <Field
             value={fields.password}
+            secureTextEntry={true}
             onChangeText={(v) => {
               handleFieldChange("password", v);
             }}
             placeholder="Password"
           />
+          <Field
+            value={fields.repassword}
+            secureTextEntry={true}
+            onChangeText={(v) => {
+              handleFieldChange("repassword", v);
+            }}
+            placeholder="Rewrite Password"
+          />
         </>
       )}
+      <Text style={styles.error}>{error}</Text>
       <Btn title={signType} onPress={() => submit()} />
     </View>
   );
@@ -103,4 +129,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     paddingBottom: 12,
   },
+  error: {
+    marginTop: 10,
+    fontSize: 16,
+  }
 });
