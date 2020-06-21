@@ -1,6 +1,6 @@
 export { BookingsScreen } from "./BookingsScreen";
 export { FavoritesScreen } from "./FavoritesScreen";
 export { HomeScreen } from "./HomeScreen";
-export { SettingsScreen } from "./SettingsScreen";
+export { SettingsScreen } from "./SettingsScreen/";
 export { WalletScreen } from "./WalletScreen";
 export { SearchScreen } from "./SearchScreen";
