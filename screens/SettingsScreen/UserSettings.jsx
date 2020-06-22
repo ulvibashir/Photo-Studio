@@ -90,7 +90,7 @@ export const UserSettings = connect(mapStateToProps, { logOut })(
               <Text>Sign Out</Text>
             </TouchableOpacity>
           }
-          keyExtractor={(item, i) => i}
+          keyExtractor={(item, i) => i.toString()}
         />
 
         {/* <TouchableOpacity style={styles.logOut} onPress={logOut}>

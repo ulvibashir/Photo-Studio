@@ -4,6 +4,7 @@ import * as firebase from "firebase";
 const SET_AUTH_SUCCESS = "SET_AUTH_SUCCESS";
 const SET_AUTH_STATUS = "SET_AUTH_STATUS";
 const SET_AUTH_LOGOUT = "SET_LOGOUT";
+const SET_WELCOME_SCREEN_ENABLED = 'SET_WELCOME_SCREEN_ENABLED';
 
 //Selectors
 export const MODULE_NAME = "auth";
@@ -55,6 +56,8 @@ export const setAuthSuccess = (payload) => ({
 export const setAuthLogOut = () => ({
   type: SET_AUTH_LOGOUT,
 });
+
+
 
 export const signIn = ({ email, password }) => async (dispatch) => {
   try {
