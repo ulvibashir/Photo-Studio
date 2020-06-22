@@ -1,11 +1,12 @@
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
+import { TouchableOpacity, StyleSheet, View } from "react-native";
+import { CustomText as Text } from "./CustomText";
 
 export const Btn = ({ onPress, title, style,titleStyle }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={[styles.btn, style]}>
-        <Text style={[styles.title, titleStyle]}>{title}</Text>
+        <Text weight="medium" style={[styles.title, titleStyle]}>{title}</Text>
       </View>
     </TouchableOpacity>
   );

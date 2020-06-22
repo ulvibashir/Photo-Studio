@@ -1,6 +1,7 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { connect } from "react-redux";
 
 import {
   HomeStack,
@@ -9,10 +10,27 @@ import {
   WalletStack,
   SettingsStack,
 } from "./stacks";
+import {
+  selectWelcomeScreenEnabled,
+  setWelcomeScreenEnabled,
+} from "../store/studios";
+import { WelcomeScreen } from "../screens";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
-export const RootNavigation = () => {
+const mapStateToProps = (state) => ({
+  welcomeScreenEnabled: selectWelcomeScreenEnabled(state),
+});
+
+export const RootNavigation = connect(mapStateToProps, {
+  setWelcomeScreenEnabled,
+})(({ setWelcomeScreenEnabled, welcomeScreenEnabled }) => {
+
+
+  if(welcomeScreenEnabled) {
+    return <WelcomeScreen/>
+  }
+  
   return (
     <NavigationContainer>
       <Navigator>
@@ -24,4 +42,4 @@ export const RootNavigation = () => {
       </Navigator>
     </NavigationContainer>
   );
-};
+});
