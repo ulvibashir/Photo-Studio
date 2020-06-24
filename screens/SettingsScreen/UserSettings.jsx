@@ -23,7 +23,7 @@ export const UserSettings = connect(mapStateToProps, { logOut })(
   ({ logOut, user }) => {
    
     const navigation = useNavigation();
-    const date = new Date(user.creationTime);
+    const date = new Date(user?.creationTime);
     const fullDate =
       date.getDate() + "." + date.getMonth() + "." + date.getFullYear();
 
@@ -52,7 +52,7 @@ export const UserSettings = connect(mapStateToProps, { logOut })(
     ];
     return (
       <View style={styles.container}>
-        <View style={styles.heading}>
+        {/* <View style={styles.heading}>
           <TouchableOpacity
             style={styles.editWrapper}
             onPress={() => {
@@ -97,7 +97,7 @@ export const UserSettings = connect(mapStateToProps, { logOut })(
             </TouchableOpacity>
           }
           keyExtractor={(item, i) => i.toString()}
-        />
+        /> */}
       </View>
     );
   }

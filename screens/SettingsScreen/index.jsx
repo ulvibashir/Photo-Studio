@@ -12,7 +12,9 @@ const mapStateToProps = (state) => ({
 });
 export const SettingsScreen = connect(mapStateToProps)(({ status }) => {
   return (
-    <View style={styles.container}>{status ? <UserSettings /> : <Auth />}</View>
+    <View style={styles.container}>
+      {status ? <UserSettings /> : <Auth />}
+      </View>
   );
 });
 const styles = StyleSheet.create({

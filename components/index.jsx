@@ -7,3 +7,4 @@ export { RadioBtn } from "./RadioBtn";
 export { WelcomeScrIndicators } from "./WelcomeScrIndicators";
 export { CustomText } from "./CustomText";
 export {WelcomeScrContent} from './WelcomeScrContent' 
+export {TabBarIcon} from './TabBarIcon'

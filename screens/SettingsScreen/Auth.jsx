@@ -1,8 +1,21 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Alert, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Alert,
+  Text,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+} from "react-native";
 import { connect } from "react-redux";
 
-import { signUp, signIn ,selectUserInfo, selectAuthName} from "../../store/auth";
+import {
+  signUp,
+  signIn,
+  selectUserInfo,
+  selectAuthName,
+} from "../../store/auth";
 import { Field, RadioBtn, Btn } from "../../components";
 
 const options = ["Sign In", "Sign Up"];
@@ -58,75 +71,79 @@ export const Auth = connect(null, { signUp, signIn })(({ signUp, signIn }) => {
     }
   };
   return (
-    <View style={styles.container}>
-      <RadioBtn
-        style={styles.radioBtn}
-        value={signType}
-        options={options}
-        onValueChange={(v) => setSignType(v)}
-      />
-      {signType == "Sign In" ? (
-        <>
-          <Field
-            value={fields.email}
-            onChangeText={(v) => {
-              handleFieldChange("email", v);
-            }}
-            placeholder="Email"
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <RadioBtn
+            style={styles.radioBtn}
+            value={signType}
+            options={options}
+            onValueChange={(v) => setSignType(v)}
           />
-          <Field
-            value={fields.password}
-            secureTextEntry={true}
-            onChangeText={(v) => {
-              handleFieldChange("password", v);
-            }}
-            placeholder="Password"
-          />
-        </>
-      ) : (
-        <>
-          <Field
-            value={fields.email}
-            onChangeText={(v) => {
-              handleFieldChange("email", v);
-            }}
-            placeholder="Email"
-          />
-          <Field
-            value={fields.name}
-            onChangeText={(v) => {
-              handleFieldChange("name", v);
-            }}
-            placeholder="Name"
-          />
-          <Field
-            value={fields.surname}
-            onChangeText={(v) => {
-              handleFieldChange("surname", v);
-            }}
-            placeholder="Surname"
-          />
-          <Field
-            value={fields.password}
-            secureTextEntry={true}
-            onChangeText={(v) => {
-              handleFieldChange("password", v);
-            }}
-            placeholder="Password"
-          />
-          <Field
-            value={fields.repassword}
-            secureTextEntry={true}
-            onChangeText={(v) => {
-              handleFieldChange("repassword", v);
-            }}
-            placeholder="Rewrite Password"
-          />
-        </>
-      )}
-      <Text style={styles.error}>{error}</Text>
-      <Btn title={signType} onPress={() => submit()} />
-    </View>
+          {signType == "Sign In" ? (
+            <>
+              <Field
+                value={fields.email}
+                onChangeText={(v) => {
+                  handleFieldChange("email", v);
+                }}
+                placeholder="Email"
+              />
+              <Field
+                value={fields.password}
+                secureTextEntry={true}
+                onChangeText={(v) => {
+                  handleFieldChange("password", v);
+                }}
+                placeholder="Password"
+              />
+            </>
+          ) : (
+            <>
+              <Field
+                value={fields.email}
+                onChangeText={(v) => {
+                  handleFieldChange("email", v);
+                }}
+                placeholder="Email"
+              />
+              <Field
+                value={fields.name}
+                onChangeText={(v) => {
+                  handleFieldChange("name", v);
+                }}
+                placeholder="Name"
+              />
+              <Field
+                value={fields.surname}
+                onChangeText={(v) => {
+                  handleFieldChange("surname", v);
+                }}
+                placeholder="Surname"
+              />
+              <Field
+                value={fields.password}
+                secureTextEntry={true}
+                onChangeText={(v) => {
+                  handleFieldChange("password", v);
+                }}
+                placeholder="Password"
+              />
+              <Field
+                value={fields.repassword}
+                secureTextEntry={true}
+                onChangeText={(v) => {
+                  handleFieldChange("repassword", v);
+                }}
+                placeholder="Rewrite Password"
+              />
+            </>
+          )}
+          <Text style={styles.error}>{error}</Text>
+          <Btn title={signType} onPress={() => submit()} />
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 });
 
@@ -134,7 +151,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     paddingHorizontal: 20,
-    marginTop: 100,
+    paddingTop: 100,
   },
   radioBtn: {
     justifyContent: "space-around",

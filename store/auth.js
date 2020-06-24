@@ -15,6 +15,7 @@ export const selectAuthSurName = (state) => state[MODULE_NAME].surname;
 export const selectAuthCreationTime = (state) =>
   state[MODULE_NAME].creationTime; */
 export const selectUserData = (state) => state[MODULE_NAME].userData;
+
 const initialState = {
   status: false,
   userData: {
