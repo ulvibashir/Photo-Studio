@@ -15,13 +15,15 @@ export const Layout = ({
   children,
   back = false,
   cancel = false,
+  ok = false,
   title = "",
+  onPressRightIcon,
 }) => {
   const insets = useSafeArea();
   const navigation = useNavigation();
 
   const left = back ? "back" : cancel ? "cancel" : false;
-  const right = false;
+  const right = ok ? "ok" : "";
   return (
     <View style={styles.container}>
       <View style={[styles.header, { paddingTop: insets.top }]}>
@@ -40,7 +42,13 @@ export const Layout = ({
 
         <Text>{title}</Text>
 
-        <View />
+        {right ? (
+          <TouchableOpacity style={styles.headerLeftBtn} onPress={onPressRightIcon}>
+            <Image source={ICONS[right]} style={styles.headerLeftImg} />
+          </TouchableOpacity>
+        ) : (
+          <View />
+        )}
       </View>
       <View style={styles.body}>{children}</View>
     </View>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Alert, Text } from "react-native";
 import { connect } from "react-redux";
 
-import { signUp, signIn } from "../../store/auth";
+import { signUp, signIn ,selectUserInfo, selectAuthName} from "../../store/auth";
 import { Field, RadioBtn, Btn } from "../../components";
 
 const options = ["Sign In", "Sign Up"];
@@ -19,16 +19,28 @@ export const Auth = connect(null, { signUp, signIn })(({ signUp, signIn }) => {
   });
 
   const validation = () => {
-    for (let key of Object.keys(fields)) {
-      if (fields[key].trim() === "") {
-        setError(`Please, write your ${key}.`);
+    const keys = Object.keys(fields);
+    if (signType == "Sign In") {
+      if (fields.email.trim() === "") {
+        setError(`Please, write your email.`);
         return false;
       }
+      if (fields.password.trim() === "") {
+        setError(`Please, write your password.`);
+        return false;
+      }
+    } else {
+      for (let key of keys) {
+        if (fields[key].trim() === "") {
+          setError(`Please, write your ${key}.`);
+          return false;
+        }
+      }
     }
-  
     if (fields.password !== fields.repassword && signType == "Sign Up") {
       setError("Confirm your password.");
     }
+    return true;
   };
   const handleFieldChange = (name, value) => {
     setFields((fields) => ({
@@ -122,15 +134,15 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     paddingHorizontal: 20,
-    marginTop: 70,
+    marginTop: 100,
   },
   radioBtn: {
     justifyContent: "space-around",
-    fontSize: 25,
+    fontSize: 23,
     paddingBottom: 12,
   },
   error: {
     marginTop: 10,
     fontSize: 16,
-  }
+  },
 });
