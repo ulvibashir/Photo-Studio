@@ -11,19 +11,19 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 
-import { logOut, selectAuthCreationTime } from "../../store/auth";
-import { selectAuthSurName, selectAuthName } from "../../store/auth";
+import { logOut, selectUserData } from "../../store/auth";
 import { COLORS, ICONS } from "../../styles";
 import { Btn } from "../../components";
+import { useNavigation } from "@react-navigation/native";
 
 const mapStateToProps = (state) => ({
-  name: selectAuthName(state),
-  surname: selectAuthSurName(state),
-  creationTime: selectAuthCreationTime(state),
+  user: selectUserData(state),
 });
 export const UserSettings = connect(mapStateToProps, { logOut })(
-  ({ name, surname, creationTime, logOut }) => {
-    const date = new Date(creationTime);
+  ({ logOut, user }) => {
+   
+    const navigation = useNavigation();
+    const date = new Date(user.creationTime);
     const fullDate =
       date.getDate() + "." + date.getMonth() + "." + date.getFullYear();
 
@@ -45,7 +45,7 @@ export const UserSettings = connect(mapStateToProps, { logOut })(
       {
         heading: "Other",
         screens: [
-          { name: "Invite friend, get  $30", route: "" },
+          { name: "Invite friend, get $30", route: "" },
           { name: "Rate the App", route: "" },
         ],
       },
@@ -53,14 +53,20 @@ export const UserSettings = connect(mapStateToProps, { logOut })(
     return (
       <View style={styles.container}>
         <View style={styles.heading}>
-          <TouchableOpacity style={styles.editWrapper}>
+          <TouchableOpacity
+            style={styles.editWrapper}
+            onPress={() => {
+              navigation.navigate("edit-user");
+            }}
+          >
             <Image style={styles.edit} source={ICONS.edit} />
           </TouchableOpacity>
           <Image style={styles.img} />
           <Text style={styles.userName}>
-            {name} {surname}
+            {user.name} {user.surname}
           </Text>
           <Text style={styles.time}>Member since {fullDate}</Text>
+          <Text style={styles.time}>{user.speciality}, {user.city}</Text>
           <View style={styles.btnWrapper}>
             <Btn
               titleStyle={styles.btnText}
@@ -92,12 +98,6 @@ export const UserSettings = connect(mapStateToProps, { logOut })(
           }
           keyExtractor={(item, i) => i.toString()}
         />
-
-        {/* <TouchableOpacity style={styles.logOut} onPress={logOut}>
-          <Text>
-            Sign Out
-          </Text>
-        </TouchableOpacity> */}
       </View>
     );
   }
@@ -160,11 +160,11 @@ const styles = StyleSheet.create({
   menuHeader: {
     fontSize: 21,
     fontWeight: "bold",
-    paddingVertical: 5,
+    paddingVertical: 7,
   },
   menuContent: {
     fontSize: 16,
-    paddingVertical: 5,
+    paddingVertical: 4,
   },
   logOut: {
     // paddingVertical: 5,
