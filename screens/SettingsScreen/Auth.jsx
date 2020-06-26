@@ -52,6 +52,7 @@ export const Auth = connect(null, { signUp, signIn })(({ signUp, signIn }) => {
     }
     if (fields.password !== fields.repassword && signType == "Sign Up") {
       setError("Confirm your password.");
+      return false
     }
     return true;
   };

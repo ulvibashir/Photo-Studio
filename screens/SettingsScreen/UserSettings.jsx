@@ -3,10 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   Image,
   TouchableOpacity,
-  Dimensions,
   FlatList,
 } from "react-native";
 import { connect } from "react-redux";
@@ -21,7 +19,6 @@ const mapStateToProps = (state) => ({
 });
 export const UserSettings = connect(mapStateToProps, { logOut })(
   ({ logOut, user }) => {
-   
     const navigation = useNavigation();
     const date = new Date(user?.creationTime);
     const fullDate =
@@ -52,21 +49,30 @@ export const UserSettings = connect(mapStateToProps, { logOut })(
     ];
     return (
       <View style={styles.container}>
-        {/* <View style={styles.heading}>
+        <View style={styles.heading}>
           <TouchableOpacity
             style={styles.editWrapper}
             onPress={() => {
-              navigation.navigate("edit-user");
+              navigation.navigate("edit-screen");
             }}
           >
             <Image style={styles.edit} source={ICONS.edit} />
           </TouchableOpacity>
-          <Image style={styles.img} />
+          <View style={styles.imgContainer}>
+            <Image
+              style={styles.img}
+              source={!!user?.image?.length ? { uri: user.image } : ICONS.avatar}
+            />
+          </View>
           <Text style={styles.userName}>
             {user.name} {user.surname}
           </Text>
           <Text style={styles.time}>Member since {fullDate}</Text>
-          <Text style={styles.time}>{user.speciality}, {user.city}</Text>
+          <Text style={styles.time}>
+            {user?.speciality}
+            {!!user?.city &&   !!user?.speciality  ?`, ` : ""}
+            {user.city}
+          </Text>
           <View style={styles.btnWrapper}>
             <Btn
               titleStyle={styles.btnText}
@@ -97,7 +103,7 @@ export const UserSettings = connect(mapStateToProps, { logOut })(
             </TouchableOpacity>
           }
           keyExtractor={(item, i) => i.toString()}
-        /> */}
+        />
       </View>
     );
   }
@@ -117,11 +123,19 @@ const styles = StyleSheet.create({
     height: 250,
     marginBottom: 8,
   },
-  img: {
-    width: 80,
-    height: 80,
-    backgroundColor: "grey",
+  imgContainer: {
+    width: 70,
+    height: 67,
+    borderWidth: 3,
+    borderColor: "black",
     borderRadius: 20,
+    overflow: 'hidden',
+  },
+  img: {
+    resizeMode: "stretch",
+    height: "100%",
+    width: "100%",
+    
   },
   userName: {
     fontSize: 20,

@@ -70,6 +70,8 @@ export const RootNavigation = connect(mapStateToProps, {
           tabStyle: {
             backgroundColor: COLORS.TAB_COLOR,
             borderWidth: 0,
+         
+    
           },
           showLabel: false,
           activeTintColor: "red",
