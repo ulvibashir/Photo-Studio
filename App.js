@@ -6,6 +6,7 @@ import { RootNavigation } from "./navigation/RootNavigation";
 import store, { persistor } from "./store";
 import { AppLoading } from "expo";
 import { loadFonts } from "./styles/fonts";
+import { View } from "react-native";
 
 export default function App() {
 

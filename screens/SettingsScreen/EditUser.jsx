@@ -100,6 +100,7 @@ export const EditUser = connect(mapStateToProps,{updateUser})(({user,updateUser}
       <View style={styles.container}>
         <FlatList
           data={inputs}
+          keyExtractor={(item) => item.label}
           renderItem={({ item }) => (
             <View style={styles.inputWrapper}>
               <CustomText>{item.label}</CustomText>

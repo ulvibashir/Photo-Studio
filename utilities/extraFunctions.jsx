@@ -22,17 +22,19 @@ const monthNames = [
   };
   
   export const fullTime = (startDateTime, endDateTime) => {
-    return `${timeConvert(startDateTime)} - ${timeConvert(endDateTime)}`;
+    return `${timeConvert(startDateTime)}  -  ${timeConvert(endDateTime)}`;
   };
 
 
-  export const fullDate = (dateTime) => {
+  export const fullDate = (dateTime, withYear = false) => {
     const date = new Date(dateTime);
     const day = date.getDate();
     const month = monthNames[date.getMonth()];
     const year = date.getFullYear();
-    return `${day} ${month},  ${year}`;
+    
+    return !withYear ? `${day} ${month},  ${year}` : `${day} ${month}`;
   };
+
 
   export const dateTimeConvert = (defaultTime) => {
     const date = new Date(defaultTime)

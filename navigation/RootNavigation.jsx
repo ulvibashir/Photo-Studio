@@ -17,6 +17,7 @@ import {
 import { WelcomeScreen } from "../screens";
 import {TabBarIcon } from "../components";
 import { COLORS } from "../styles";
+import { View } from "react-native";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -66,7 +67,12 @@ export const RootNavigation = connect(mapStateToProps, {
             
           }
         })}
+        
         tabBarOptions={{
+          style:{
+            backgroundColor:  'red',
+            borderTopWidth: 0
+          },
           tabStyle: {
             backgroundColor: COLORS.TAB_COLOR,
             borderWidth: 0,
@@ -77,7 +83,7 @@ export const RootNavigation = connect(mapStateToProps, {
           keyboardHidesTabBar: true,
         }}
       >
-        <Screen name="home-stack" component={HomeStack} />
+        <Screen name="home-stack" component={HomeStack}/>
         <Screen name="favorites-stack" component={FavoritesStack} />
         <Screen name="bookings-stack" component={BookingsStack} />
         <Screen name="wallet-stack" component={WalletStack} />

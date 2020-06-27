@@ -1,26 +1,88 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Dimensions, TouchableOpacity, Button } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+
 import { Layout } from "../commons";
-import { StudioListBody } from "../components";
+import { StudioListBody, CustomText as Text} from "../components";
+import { COLORS } from "../styles";
+import { fullTime, fullDate } from "../utilities/extraFunctions";
+import { connect } from "react-redux";
+import { getStudios, selectStudios } from "../store/studios";
 
-export const HomeScreen = () => {
+const mapStateToProps = state => ({
+  studios: selectStudios(state)
+})
+export const HomeScreen = connect(mapStateToProps, {getStudios})(({
+  navigation,
+  getStudios,
+  studios,
+  route: {
+    params: {
+      fields: { city, date, startTime, endTime },
+    },
+  },
+}) => {
+
+  useEffect(() => {
+    getStudios();
+  }, [])
   return (
-    <Layout back={true} title="Los Angeles">
+    <Layout back={true} title={city}>
       <View style={styles.container}>
-        <View>{/* Filter section */}</View>
-        <Text>HomeScreen</Text>
+        <LinearGradient
+          style={styles.bgGradient}
+          colors={[COLORS.BG_GRADIENT_1, COLORS.BG_GRADIENT_2]}
+          start={[0, 0.5]}
+          end={[1, 0.5]}
+        />
 
-        <StudioListBody />
+        <View style={styles.filterContainer}>
+          <TouchableOpacity style={styles.filterItem}>
+            <Text style={styles.filterText}>{fullDate(date, true)}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.filterItem, styles.border]}>
+            <Text style={styles.filterText}>{startTime && endTime ? fullTime(startTime,endTime) : '--:--'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.filterItem}>
+            <Text style={styles.filterText}>Filter</Text>
+          </TouchableOpacity>
+        </View>
+        <StudioListBody data={studios}/>
       </View>
     </Layout>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
 
-    justifyContent: "center",
-    alignItems: "center",
   },
+  bgGradient: {
+    //...StyleSheet.absoluteFill
+  },
+  filterContainer: {
+    height: 50,
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: COLORS.BG_GRADIENT_2
+  },
+  filterItem: {
+    width: Dimensions.get('window').width / 3,
+    alignItems: 'center',
+
+    height: '100%',
+    justifyContent: 'center'
+  },
+  filterText: {
+    fontSize: 16,
+    color: 'white'
+  },
+  border: {
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
+    borderColor: 'gray'
+  }
 });
