@@ -31,11 +31,15 @@ export const SearchScreen = ({ navigation }) => {
     return true;
   };
   const onSearchHandler = () => {
-    if(validate()) {
-      navigation.navigate("home-screen");
-    } else {
-      Alert.alert('Select date')
-    }
+    // if(validate()) {
+    //   navigation.navigate("home-screen", {fields});
+    // } else {
+    //   Alert.alert('Select date')
+    // }
+
+
+    navigation.navigate("home-screen", {fields});
+
   };
 
   const filedsChangeHandler = (name, value) => {
