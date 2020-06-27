@@ -11,7 +11,7 @@ export const SettingsStack = () => {
   return (
     <Navigator headerMode="none">
       <Screen name="settings-screen" component={SettingsScreen} />
-      <Screen name="edit-user" component={EditUser} />
+      <Screen name="edit-screen" component={EditUser} />
     </Navigator>
   );
 };

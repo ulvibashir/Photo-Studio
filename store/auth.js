@@ -1,5 +1,6 @@
 import fbApp from "../firebaseInit";
 import * as firebase from "firebase";
+
 //Action types
 const SET_AUTH_SUCCESS = "SET_AUTH_SUCCESS";
 const SET_AUTH_STATUS = "SET_AUTH_STATUS";
@@ -16,6 +17,8 @@ export const selectAuthCreationTime = (state) =>
   state[MODULE_NAME].creationTime; */
 export const selectUserData = (state) => state[MODULE_NAME].userData;
 
+// Reducer
+
 const initialState = {
   status: false,
   userData: {
@@ -23,15 +26,15 @@ const initialState = {
     userID: null,
     email: null,
     name: null,
+    image: null,
     surname: null,
     phone: null,
     speciality: null,
     password: null,
-    website: null,
-    instagram: null,
     city: null,
   },
 };
+
 export function reducer(state = initialState, { type, payload }) {
   switch (type) {
     case SET_AUTH_SUCCESS:
@@ -40,13 +43,7 @@ export function reducer(state = initialState, { type, payload }) {
         status: true,
         userData: {
           ...state.userData,
-          userID: payload.userID,
-          name: payload.name,
-          email: payload.email,
-          password: payload.password,
-          surname: payload.surname,
-          creationTime: payload.creationTime,
-          speciality: "",
+          ...payload,
         },
       };
     case SET_AUTH_LOGOUT:
@@ -63,8 +60,6 @@ export function reducer(state = initialState, { type, payload }) {
           phone: null,
           speciality: null,
           password: null,
-          website: null,
-          instagram: null,
           city: null,
         },
       };
@@ -80,7 +75,7 @@ export function reducer(state = initialState, { type, payload }) {
       return state;
   }
 }
-
+// Action creators
 export const setAuthStatus = (payload) => ({
   type: SET_AUTH_STATUS,
   payload,
@@ -97,25 +92,20 @@ export const setUserInfo = (payload) => ({
   type: UPDATE_USER,
   payload,
 });
+
+// Middlewares
+
 export const signIn = ({ email, password }) => async (dispatch) => {
   try {
     const {
-      user: {
-        uid,
-        metadata: { creationTime },
-      },
+      user: { uid },
     } = await fbApp.auth.signInWithEmailAndPassword(email, password);
-    const { name, surname } = (
-      await fbApp.data.ref(`users/${uid}`).once("value")
-    ).val();
+    const data = (await fbApp.data.ref(`users/${uid}`).once("value")).val();
+
     dispatch(
       setAuthSuccess({
         userID: uid,
-        email,
-        password,
-        name,
-        surname,
-        creationTime,
+        ...data,
       })
     );
   } catch (error) {
@@ -123,22 +113,20 @@ export const signIn = ({ email, password }) => async (dispatch) => {
   }
 };
 
-export const signUp = ({
-  email,
-  password,
-  name,
-  surname,
-
-}) => async (dispatch) => {
+export const signUp = ({ email, password, name, surname }) => async (
+  dispatch
+) => {
   try {
     const {
       user: {
         uid,
         metadata: { creationTime },
       },
-    } = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    } = await fbApp.auth.createUserWithEmailAndPassword(email, password);
 
-    fbApp.data.ref(`users/${uid}`).set({ name, surname, email, creationTime });
+    fbApp.data
+      .ref(`users/${uid}`)
+      .set({ name, surname, email, password, creationTime });
 
     dispatch(
       setAuthSuccess({
@@ -166,13 +154,27 @@ export const logOut = () => (dispatch) => {
 
 export const updateUser = (data) => async (dispatch) => {
   try {
-    const { uid } = fbApp.auth.currentUser;
+    const {
+      uid,
+      metadata: { creationTime },
+    } = fbApp.auth.currentUser;
 
-    await fbApp.data.ref(`users/${uid}`).set(data);
+    fbApp.data.ref(`users/${uid}`).set({creationTime, ...data});
+    const { email, password } = data;
 
-    dispatch(setUserInfo(data));
-    const dt = (await fbApp.data.ref(`users/${uid}`).once("value")).val();
-    console.log(dt, "firebase");
+    const user = (await fbApp.data.ref(`users/${uid}`).once("value")).val();
+
+    const credential = firebase.auth.EmailAuthProvider.credential(
+      user.email,
+      user.password
+    );
+
+    await fbApp.auth.currentUser.updateEmail(email);
+    await fbApp.auth.currentUser.updatePassword(password);
+
+    dispatch(setUserInfo({ creationTime, ...data }));
+
+    return fbApp.auth.currentUser.reauthenticateWithCredential(credential);
   } catch (error) {
     console.log(error, "update user");
   }
