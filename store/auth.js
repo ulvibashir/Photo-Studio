@@ -61,6 +61,7 @@ export function reducer(state = initialState, { type, payload }) {
           speciality: null,
           password: null,
           city: null,
+          image
         },
       };
     case UPDATE_USER:

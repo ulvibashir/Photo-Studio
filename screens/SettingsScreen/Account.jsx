@@ -17,7 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 const mapStateToProps = (state) => ({
   user: selectUserData(state),
 });
-export const UserSettings = connect(mapStateToProps, { logOut })(
+export const Account = connect(mapStateToProps, { logOut })(
   ({ logOut, user }) => {
     const navigation = useNavigation();
     const date = new Date(user?.creationTime);

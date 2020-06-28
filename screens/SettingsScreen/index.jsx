@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Layout } from "../../commons";
 import { Auth } from "./Auth";
 import { selectAuthStatus } from "../../store/auth";
-import { UserSettings } from "./UserSettings";
+import { Account } from "./Account";
 
 const mapStateToProps = (state) => ({
   status: selectAuthStatus(state),
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => ({
 export const SettingsScreen = connect(mapStateToProps)(({ status }) => {
   return (
     <View style={styles.container}>
-      {status ? <UserSettings /> : <Auth />}
+      {status ? <Account /> : <Auth />}
       </View>
   );
 });

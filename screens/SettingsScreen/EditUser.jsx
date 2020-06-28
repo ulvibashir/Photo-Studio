@@ -105,7 +105,6 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
           handleFieldChange("speciality", v);
         },
       },
-<<<<<<< HEAD
     ];
     return (
       <Layout
@@ -144,33 +143,6 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
     );
   }
 );
-=======
-    },
-  ];
-  return (
-    <Layout title='Edit User' cancel={true} ok={true} onPressRightIcon={() => {updateUser(fields)}}>
-      <View style={styles.container}>
-        <FlatList
-          data={inputs}
-          keyExtractor={(item) => item.label}
-          renderItem={({ item }) => (
-            <View style={styles.inputWrapper}>
-              <CustomText>{item.label}</CustomText>
-              <TextInput
-                secureTextEntry={item.value === "password"}
-                onChangeText={item.onChangeText}
-                value={fields[item.value]}
-                style={styles.input}
-              />
-            </View>
-          )}
-          keyExtractor={(item,i)=> i}
-        />
-      </View>
-    </Layout>
-  );
-});
->>>>>>> search-screen
 
 const styles = StyleSheet.create({
   container: {
