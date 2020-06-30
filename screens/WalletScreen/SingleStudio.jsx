@@ -5,8 +5,8 @@ import { CustomText } from "../../components";
 
 export const SingleStudio = ({ name, time,onPress }) => {
   return (
-    <View>
-      <TouchableOpacity style={styles.container} onPress={onPress}>
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.studio} onPress={onPress}>
           <CustomText style={styles.name}>
               {name}
           </CustomText>
@@ -19,7 +19,10 @@ export const SingleStudio = ({ name, time,onPress }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+    container: {
+        paddingHorizontal: 16,
+    },
+  studio: {
       marginTop: 14,
       backgroundColor: 'grey',
       width: '100%',

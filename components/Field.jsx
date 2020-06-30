@@ -9,13 +9,13 @@ export const Field = ({ style, ...rest }) => (
 );
 const styles = StyleSheet.create({
   field: {
-    backgroundColor: COLORS.PRIMARY,
+    backgroundColor: COLORS.HEADER_COLOR,
     height: 48,
     paddingHorizontal: 18,
     fontSize: 15,
     borderRadius: 25,
     marginTop: 18,
-    color: COLORS.SECONDARY,
+    color: 'white',
    
   },
 });

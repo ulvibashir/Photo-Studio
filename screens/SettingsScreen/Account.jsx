@@ -13,6 +13,7 @@ import { logOut, selectUserData } from "../../store/auth";
 import { COLORS, ICONS } from "../../styles";
 import { Btn } from "../../components";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const mapStateToProps = (state) => ({
   user: selectUserData(state),
@@ -49,6 +50,12 @@ export const Account = connect(mapStateToProps, { logOut })(
     ];
     return (
       <View style={styles.container}>
+        <LinearGradient
+          style={styles.bgGradient}
+          colors={[COLORS.BG_GRADIENT_1, COLORS.BG_GRADIENT_2]}
+          start={[0, 0.5]}
+          end={[1, 0.5]}
+        />
         <View style={styles.heading}>
           <TouchableOpacity
             style={styles.editWrapper}
@@ -61,26 +68,50 @@ export const Account = connect(mapStateToProps, { logOut })(
           <View style={styles.imgContainer}>
             <Image
               style={styles.img}
-              source={!!user?.image?.length ? { uri: user.image } : ICONS.avatar}
+              source={
+                !!user?.image?.length ? { uri: user.image } : ICONS.avatar
+              }
             />
           </View>
           <Text style={styles.userName}>
             {user.name} {user.surname}
           </Text>
-          <Text style={styles.time}>Member since {fullDate}</Text>
-          <Text style={styles.time}>
-            {user?.speciality}
-            {!!user?.city &&   !!user?.speciality  ?`, ` : ""}
-            {user.city}
-          </Text>
+          <Text style={styles.about}>Member since {fullDate}</Text>
+          {!!user?.speciality || !!user?.city ? (
+            <Text style={styles.about}>
+              {user?.speciality}
+              {!!user?.city && !!user?.speciality ? `, ` : ""}
+              {user.city}
+            </Text>
+          ) : (
+            <View />
+          )}
           <View style={styles.btnWrapper}>
-            <Btn
-              titleStyle={styles.btnText}
-              style={[styles.contractsBtn, styles.btn]}
-              title="Contracts"
-              onPress={() => {}}
-            />
-            <Btn style={styles.btn} title="Support" onPress={() => {}} />
+            <LinearGradient
+              style={styles.btn}
+              colors={[COLORS.BTN_GRADIENT_1, COLORS.BTN_GRADIENT_2]}
+              start={[0, 0.5]}
+              end={[1, 0.5]}
+            >
+              <TouchableOpacity style={styles.contractsBtn}>
+                <Text style={styles.btnTitle} weight="medium">
+                  Contracts
+                </Text>
+              </TouchableOpacity>
+            </LinearGradient>
+
+            <TouchableOpacity style={styles.btn}>
+              <LinearGradient
+                style={styles.bgGradient}
+                colors={[COLORS.BTN_GRADIENT_1, COLORS.BTN_GRADIENT_2]}
+                start={[0, 0.5]}
+                end={[1, 0.5]}
+              />
+
+              <Text style={styles.btnTitle} weight="medium">
+                Support
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -99,7 +130,7 @@ export const Account = connect(mapStateToProps, { logOut })(
           )}
           ListFooterComponent={
             <TouchableOpacity style={styles.logOut} onPress={logOut}>
-              <Text>Sign Out</Text>
+              <Text style={styles.logOutTitle}>Sign Out</Text>
             </TouchableOpacity>
           }
           keyExtractor={(item, i) => i.toString()}
@@ -113,14 +144,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
+  bgGradient: {
+    ...StyleSheet.absoluteFill,
+  },
   heading: {
     paddingVertical: 22,
     paddingHorizontal: 15,
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: COLORS.PRIMARY,
-    height: 250,
+    backgroundColor: COLORS.HEADER_COLOR,
+    height: 280,
     marginBottom: 8,
   },
   imgContainer: {
@@ -129,19 +163,23 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "black",
     borderRadius: 20,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   img: {
     resizeMode: "stretch",
     height: "100%",
     width: "100%",
-    
   },
   userName: {
     fontSize: 20,
     fontWeight: "bold",
+    color: "white",
+    paddingVertical: 8,
   },
-
+  about: {
+    color: "white",
+    paddingVertical: 5,
+  },
   editWrapper: {
     position: "absolute",
     top: 10,
@@ -157,31 +195,56 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
   },
-  btn: {
-    width: 180,
-  },
+
   contractsBtn: {
-    backgroundColor: COLORS.PRIMARY,
-    borderWidth: 2,
-    borderColor: "black",
+    backgroundColor: COLORS.HEADER_COLOR,
+    width: "100%",
+    height: "100%",
+    borderWidth: 1,
+    borderRadius: 50,
+    borderColor: "transparent",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  btnText: {
-    color: "black",
+  btn: {
+    height: 55,
+    borderRadius: 50,
+    width: "48%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 18,
+    overflow: "hidden",
+    marginBottom: 16,
+  },
+  btnTitle: {
+    fontSize: 15,
+    color: "white",
+  },
+  cricleGradient: {
+    margin: 1,
+    borderRadius: 5,
   },
   menu: {
     paddingHorizontal: 20,
+    paddingTop: 12,
   },
   menuHeader: {
     fontSize: 21,
     fontWeight: "bold",
     paddingVertical: 7,
+    color: "white",
   },
   menuContent: {
     fontSize: 16,
-    paddingVertical: 4,
+    paddingVertical: 9,
+    color: "white",
   },
   logOut: {
-    // paddingVertical: 5,
-    marginTop: 15,
+    color: "white",
+    paddingVertical: 15,
+  },
+  logOutTitle: {
+    color: "white",
   },
 });

@@ -6,7 +6,7 @@ const SET_AUTH_SUCCESS = "SET_AUTH_SUCCESS";
 const SET_AUTH_STATUS = "SET_AUTH_STATUS";
 const SET_AUTH_LOGOUT = "SET_LOGOUT";
 const UPDATE_USER = "UPDATE_USER";
-const SET_WELCOME_SCREEN_ENABLED = "SET_WELCOME_SCREEN_ENABLED";
+const UPDATE_USER_CARDS = "UPDATE_USER_CARDS";
 
 //Selectors
 export const MODULE_NAME = "auth";
@@ -16,6 +16,7 @@ export const selectAuthSurName = (state) => state[MODULE_NAME].surname;
 export const selectAuthCreationTime = (state) =>
   state[MODULE_NAME].creationTime; */
 export const selectUserData = (state) => state[MODULE_NAME].userData;
+export const selectUsersCards = (state) => state[MODULE_NAME].userData.cards;
 
 // Reducer
 
@@ -32,6 +33,7 @@ const initialState = {
     speciality: null,
     password: null,
     city: null,
+    cards: [],
   },
 };
 
@@ -61,7 +63,8 @@ export function reducer(state = initialState, { type, payload }) {
           speciality: null,
           password: null,
           city: null,
-          image
+          image: null,
+          cards: [],
         },
       };
     case UPDATE_USER:
@@ -70,6 +73,15 @@ export function reducer(state = initialState, { type, payload }) {
         userData: {
           ...state.userData,
           ...payload,
+         
+        },
+      };
+    case UPDATE_USER_CARDS:
+      return {
+        ...state,
+        userData: {
+          ...state.userData,
+          cards: payload,
         },
       };
     default:
@@ -93,6 +105,10 @@ export const setUserInfo = (payload) => ({
   type: UPDATE_USER,
   payload,
 });
+export const setUsersCards = (payload) => ({
+  type: UPDATE_USER_CARDS,
+  payload,
+});
 
 // Middlewares
 
@@ -102,11 +118,22 @@ export const signIn = ({ email, password }) => async (dispatch) => {
       user: { uid },
     } = await fbApp.auth.signInWithEmailAndPassword(email, password);
     const data = (await fbApp.data.ref(`users/${uid}`).once("value")).val();
-
+    const cardsObj = (
+      await fbApp.data.ref(`users/${uid}/cards`).once("value")
+    ).val();
+    const cards = [];
+    for (let key in cardsObj) {
+      cards.push({
+        ...cardsObj[key],
+      });
+    }
+    console.log(cards, "crt");
+  
     dispatch(
       setAuthSuccess({
         userID: uid,
         ...data,
+        cards,
       })
     );
   } catch (error) {
@@ -149,34 +176,70 @@ export const logOut = () => (dispatch) => {
     fbApp.auth.signOut();
     dispatch(setAuthLogOut());
   } catch (error) {
-    console.log(error);
+    console.log(error, "logout");
   }
 };
 
 export const updateUser = (data) => async (dispatch) => {
   try {
-    const {
-      uid,
-      metadata: { creationTime },
-    } = fbApp.auth.currentUser;
+    const { uid } = fbApp.auth.currentUser;
 
-    fbApp.data.ref(`users/${uid}`).set({creationTime, ...data});
-    const { email, password } = data;
+    const {
+      email,
+      password,
+      name,
+      surname,
+      image,
+      phone,
+      city,
+      speciality,
+    } = data;
 
     const user = (await fbApp.data.ref(`users/${uid}`).once("value")).val();
 
     const credential = firebase.auth.EmailAuthProvider.credential(
-      user.email,
-      user.password
+      email,
+      password
     );
+    console.log(credential);
 
-    await fbApp.auth.currentUser.updateEmail(email);
-    await fbApp.auth.currentUser.updatePassword(password);
+    dispatch(setUserInfo({ ...data }));
 
-    dispatch(setUserInfo({ creationTime, ...data }));
+    if (user.email !== email || user.password !== password) {
+      await fbApp.auth.currentUser.updateEmail(email);
+      await fbApp.auth.currentUser.updatePassword(password);
 
-    return fbApp.auth.currentUser.reauthenticateWithCredential(credential);
+      fbApp.data.ref(`users/${uid}`).update({ email, password });
+
+      return fbApp.auth.currentUser.reauthenticateWithCredential(credential);
+    } else {
+      fbApp.data
+        .ref(`users/${uid}`)
+        .update({ name, surname, image, phone, city, speciality });
+    }
   } catch (error) {
     console.log(error, "update user");
+  }
+};
+
+export const updateUserCards = (data) => async (dispatch) => {
+  try {
+    console.log(data, "cards");
+    const { uid } = fbApp.auth.currentUser;
+    fbApp.data.ref(`users/${uid}/cards`).push(data);
+
+    const cardsObj = (
+      await fbApp.data.ref(`users/${uid}/cards`).once("value")
+    ).val();
+    const cards = [];
+    for (let key in cardsObj) {
+      cards.push({
+        ...cardsObj[key],
+      });
+    }
+    console.log(cards, "crt");
+    dispatch(setUsersCards([...cards]));
+  } catch (error) {
+    console.log(error, "update card");
   }
 };
