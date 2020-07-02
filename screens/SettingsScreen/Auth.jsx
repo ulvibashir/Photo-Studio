@@ -6,6 +6,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   Keyboard,
+  TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
 import { connect } from "react-redux";
@@ -17,6 +18,8 @@ import {
   selectAuthName,
 } from "../../store/auth";
 import { Field, RadioBtn, Btn } from "../../components";
+import { LinearGradient } from "expo-linear-gradient";
+import { COLORS } from "../../styles";
 
 const options = ["Sign In", "Sign Up"];
 
@@ -72,9 +75,15 @@ export const Auth = connect(null, { signUp, signIn })(({ signUp, signIn }) => {
     }
   };
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
+        <LinearGradient
+        style={styles.bgGradient}
+        colors={[COLORS.BG_GRADIENT_1, COLORS.BG_GRADIENT_2]}
+        start={[0, 0.5]}
+        end={[1, 0.5]}
+      />
           <RadioBtn
             style={styles.radioBtn}
             value={signType}
@@ -141,7 +150,23 @@ export const Auth = connect(null, { signUp, signIn })(({ signUp, signIn }) => {
             </>
           )}
           <Text style={styles.error}>{error}</Text>
-          <Btn title={signType} onPress={() => submit()} />
+          <TouchableOpacity
+              style={styles.btn}
+              onPress={() => {
+               submit()
+              }}
+            >
+              <LinearGradient
+                style={styles.bgGradient}
+                colors={[COLORS.BTN_GRADIENT_1, COLORS.BTN_GRADIENT_2]}
+                start={[0, 0.5]}
+                end={[1, 0.5]}
+              />
+              
+              <Text style={styles.btnTitle} weight="medium">
+                {signType}
+              </Text>
+            </TouchableOpacity>
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -150,9 +175,14 @@ export const Auth = connect(null, { signUp, signIn })(({ signUp, signIn }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     justifyContent: "center",
     paddingHorizontal: 20,
-    paddingTop: 100,
+  
+  },
+  bgGradient:{
+...StyleSheet.absoluteFill
+
   },
   radioBtn: {
     justifyContent: "space-around",
@@ -162,5 +192,21 @@ const styles = StyleSheet.create({
   error: {
     marginTop: 10,
     fontSize: 16,
+    color: 'white',
+  },
+  btn: {
+    height: 45,
+    borderRadius: 50,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 18,
+    overflow: "hidden",
+    marginBottom: 16,
+  },
+  btnTitle: {
+      fontSize: 15,
+      color: 'white'
   },
 });

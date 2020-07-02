@@ -3,6 +3,8 @@ import cancel from '../assets/ICONS/cancel.png'
 import edit from '../assets/ICONS/edit.png'
 import ok from '../assets/ICONS/ok.png'
 import avatar from '../assets/ICONS/user.png'
+import card from '../assets/ICONS/card.png'
+import add from '../assets/ICONS/add.png'
 
 import home from '../assets/ICONS/BottomTab/home.png'
 import favorites from '../assets/ICONS/BottomTab/heart.png'
@@ -22,7 +24,9 @@ export const ICONS = Object.freeze({
     cancel,
     edit,
     ok,
-    avatar
+    avatar,
+    card,
+    add,
 })
 
 export const TAB_ICONS = Object.freeze({

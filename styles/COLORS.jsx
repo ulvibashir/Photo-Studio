@@ -5,5 +5,6 @@ export const COLORS = Object.freeze({
   BTN_GRADIENT_2: '#02bafd',
   BG_GRADIENT_1: '#1d1e22',
   BG_GRADIENT_2: '#464a4d',
-  TAB_COLOR: '#4f5356'
+  TAB_COLOR: '#4f5356',
+  HEADER_COLOR: '#323335'
 });
