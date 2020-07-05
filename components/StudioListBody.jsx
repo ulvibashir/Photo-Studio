@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { getStudios } from "../store/studios";
 
 export const StudioListBody = connect(null, { getStudios })(
-  ({ data, getStudios }) => {
+  ({ data, getStudios, fields }) => {
     const [refreshed, setRefreshed] = useState(false);
 
     const onRefresh = () => {
@@ -26,7 +26,7 @@ export const StudioListBody = connect(null, { getStudios })(
             data={data}
             refreshing={refreshed}
             onRefresh={onRefresh}
-            renderItem={({ item }) => <StudioListItem item={item} />}
+            renderItem={({ item }) => <StudioListItem item={item} fields={fields} />}
           />
         ) : (
           <View style={styles.indicator}>

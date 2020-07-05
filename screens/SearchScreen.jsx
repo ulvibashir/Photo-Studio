@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, StatusBar, TouchableOpacity, Alert } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { LinearGradient } from "expo-linear-gradient";
@@ -6,11 +6,11 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import { COLORS } from "../styles";
 import { CustomText as Text } from "../components";
-
+import {dummyCities, pickerValues as pick} from '../utilities/dummyCity'
 import { fullDate, fullTime, timeConvert } from "../utilities/extraFunctions";
 export const SearchScreen = ({ navigation }) => {
   const [fields, setFields] = useState({
-    city: "Baku",
+    city: "Daxi",
     date: null,
     startTime: null,
     endTime: null,
@@ -49,11 +49,8 @@ export const SearchScreen = ({ navigation }) => {
     }));
   };
 
-  const pickerValues = [
-    { label: "Baku", value: "Baku" },
-    { label: "Sumgayit", value: "Sumgayit" },
-  ];
-
+  let pickerValues = pick()
+  
   const showDatePicker = (mode, fieldType) => {
     setDatePickerVisibility(v => ({
       ...v,
@@ -80,7 +77,7 @@ export const SearchScreen = ({ navigation }) => {
       filedsChangeHandler("date", newDate);
     }
   };
-
+  
   return (
     <View style={styles.container}>
       <LinearGradient

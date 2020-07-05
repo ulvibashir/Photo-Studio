@@ -5,10 +5,10 @@ import { COLORS } from '../styles';
 import { CustomText as Text } from './CustomText';
 import { useNavigation } from '@react-navigation/native';
 
-export const StudioListItem = ({ item }) => {
+export const StudioListItem = ({ item, fields }) => {
   const navigation = useNavigation();
   const onPressHandler = () => {
-    navigation.navigate('single-studio-screen', {item})
+    navigation.navigate('single-studio-screen', {item, fields})
   }
   return (
     <TouchableOpacity style={styles.container} onPress={onPressHandler}>
