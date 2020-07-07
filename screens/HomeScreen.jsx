@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Dimensions, TouchableOpacity, Button } from "react-native";
+import { View, StyleSheet, Dimensions, TouchableOpacity, Button, ColorPropType } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { Layout } from "../commons";
@@ -18,7 +18,7 @@ export const HomeScreen = connect(mapStateToProps, {getStudios})(({
   studios,
   route: {
     params: {
-      fields: { city, date, startTime, endTime },
+      fields,
     },
   },
 }) => {
@@ -26,8 +26,9 @@ export const HomeScreen = connect(mapStateToProps, {getStudios})(({
   useEffect(() => {
     getStudios();
   }, [])
+
   return (
-    <Layout back={true} title={city}>
+    <Layout back={true} title={fields.city}>
       <View style={styles.container}>
         <LinearGradient
           style={styles.bgGradient}
@@ -38,16 +39,16 @@ export const HomeScreen = connect(mapStateToProps, {getStudios})(({
 
         <View style={styles.filterContainer}>
           <TouchableOpacity style={styles.filterItem}>
-            <Text style={styles.filterText}>{fullDate(date, true)}</Text>
+            <Text style={styles.filterText}>{fullDate(fields.date, true)}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.filterItem, styles.border]}>
-            <Text style={styles.filterText}>{startTime && endTime ? fullTime(startTime,endTime) : '--:--'}</Text>
+            <Text style={styles.filterText}>{fields.startTime && fields.endTime ? fullTime(fields.startTime,fields.endTime) : '--:--'}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.filterItem}>
             <Text style={styles.filterText}>Filter</Text>
           </TouchableOpacity>
         </View>
-        <StudioListBody data={studios}/>
+        <StudioListBody data={studios} fields={fields}/>
       </View>
     </Layout>
   );

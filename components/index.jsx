@@ -8,3 +8,4 @@ export { CustomText } from "./CustomText";
 export {WelcomeScrContent} from './WelcomeScrContent' 
 export {TabBarIcon} from './TabBarIcon'
 export {Form} from './Form'
+export { GradientBTN } from "./GradientBTN";

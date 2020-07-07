@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList, TextInput } from "react-native";
+import { View, Text, StyleSheet, FlatList, TextInput, ScrollView } from "react-native";
 
 import { CustomText } from "./CustomText";
 import { COLORS } from "../styles";
@@ -19,8 +19,8 @@ export const Form = ({ fields, inputs }) => {
 
 
   return (
-    <View style={styles.container}>
-      <FlatList
+    <ScrollView style={styles.container}>
+      {/* <FlatList
         keyboardShouldPersistTaps="always"
         data={inputs}
         renderItem={({ item }) => (
@@ -38,9 +38,25 @@ export const Form = ({ fields, inputs }) => {
           </View>
         )}
         keyExtractor={(item, i) => i.toString()}
-      />
+      /> */}
       
-    </View>
+      {
+        inputs.map((item, index) => (
+          <View style={styles.inputWrapper} key={index}>
+            <CustomText style={styles.label}>{item.label}</CustomText>
+            <TextInput
+              // blurOnSubmit={false}
+              key={item.value}
+              keyboardType={item.value == "phone" ? "number-pad" : "default"}
+              secureTextEntry={item.value === "password"}
+              onChangeText={item.onChangeText}
+              value={fields[item.value]}
+              style={styles.input}
+            />
+          </View>
+        ))
+      }
+    </ScrollView>
   );
 };
 

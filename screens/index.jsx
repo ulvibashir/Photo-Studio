@@ -6,3 +6,4 @@ export { WalletScreen } from "./WalletScreen";
 export { SearchScreen } from "./SearchScreen";
 export {WelcomeScreen} from './WelcomeScreen';
 export {SingleStudioScreen} from './SingleStudioScreen'
+export {ConfirmationScreen} from './ConfirmationScreen'

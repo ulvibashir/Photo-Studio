@@ -11,25 +11,23 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 
 import { COLORS, ICONS } from "../../styles";
-import {
-  CustomText as Text,
-  CustomText,
-} from "../../components";
+import { CustomText as Text, CustomText, GradientBTN } from "../../components";
 import { SingleStudio } from "./SingleStudio";
 import { FlatList } from "react-native-gesture-handler";
 import { Card } from "./Card";
 import { connect } from "react-redux";
 import { selectUsersCards, selectAuthStatus } from "../../store/auth";
+import uuid from "react-uuid";
 
 const options = ["My Wallet", "Payment"];
 
 const mapStateToProps = (state) => ({
   cards: selectUsersCards(state),
-  status: selectAuthStatus(state)
+  status: selectAuthStatus(state),
 });
 
 export const WalletScreen = connect(mapStateToProps)(
-  ({ navigation, cards , status}) => {
+  ({ navigation, cards, status }) => {
     const [section, setSection] = useState(options[0]);
     const data = [
       { name: "Studio D: Bookshelf", time: "5 hours" },
@@ -39,27 +37,28 @@ export const WalletScreen = connect(mapStateToProps)(
       { name: "Studio D: Bookshelf", time: "5 hours" },
     ];
 
-   /*  const borderStyle = {
+    /*  const borderStyle = {
       height: 68,
       borderColor: COLORS.BG_GRADIENT_2,
       marginBottom: 5,
     }; */
-  
-    const navigateCardForm = () =>{
+
+    const navigateCardForm = () => {
       if (status) {
         navigation.navigate("form-screen");
+      } else {
+        Alert.alert("Please sign in or sign up", "", [
+          {
+            text: "OK",
+            onPress: () => navigation.navigate("settings-stack"),
+          },
+          {
+            text: "Cancel",
+            onPress: () => console.log("wallet-screen"),
+          },
+        ]);
       }
-     else{ Alert.alert('Please sign in or sign up','',[
-        {
-          text: 'OK',
-          onPress: ()=> navigation.navigate('settings-screen')
-        },
-        {
-          text: 'Cancel',
-          onPress: ()=>console.log('wallet-screen')
-        }
-      ])}
-    }
+    };
     return (
       <View style={styles.container}>
         <LinearGradient
@@ -87,8 +86,17 @@ export const WalletScreen = connect(mapStateToProps)(
 
         <View style={styles.heading}>
           {options.map((option) => (
-            <TouchableOpacity onPress={() => setSection(option)}>
-              <Text style={[styles.option]}>{option}</Text>
+            <TouchableOpacity key={uuid()} onPress={() => setSection(option)}>
+              <Text
+                style={[
+                  styles.option,
+                  {
+                    color: option === section ? COLORS.BTN_GRADIENT_2 : "white",
+                  },
+                ]}
+              >
+                {option}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -103,16 +111,18 @@ export const WalletScreen = connect(mapStateToProps)(
                   onPress={() => navigation.navigate("studio-screen")}
                 />
               )}
+              keyExtractor={() => uuid()}
             />
           ) : !!cards.length ? (
             <FlatList
+              keyExtractor={() => uuid()}
               data={cards.slice(0).reverse()}
               renderItem={({ item }) => <Card {...item} />}
               ListFooterComponent={
                 <TouchableOpacity
                   style={styles.add}
                   onPress={() => {
-                    navigateCardForm()
+                    navigateCardForm();
                   }}
                 >
                   <Image source={ICONS.add} style={styles.icon} />
@@ -128,23 +138,12 @@ export const WalletScreen = connect(mapStateToProps)(
                 ideas.
               </CustomText>
 
-              <TouchableOpacity
-                style={styles.addBtn}
-                onPress={() => {
-                 navigateCardForm()
-                }}
-              >
-                <LinearGradient
-                  style={styles.bgGradient}
-                  colors={[COLORS.BTN_GRADIENT_1, COLORS.BTN_GRADIENT_2]}
-                  start={[0, 0.5]}
-                  end={[1, 0.5]}
-                />
-                <Image source={ICONS.card} style={styles.icon} />
-                <Text style={styles.btnTitle} weight="medium">
-                  Payment Card
-                </Text>
-              </TouchableOpacity>
+              <GradientBTN
+                style={{ marginTop: 18 }}
+                title="Payment Card"
+                iconPath={ICONS.card}
+                onPress={navigateCardForm}
+              />
             </View>
           )}
         </View>
@@ -189,7 +188,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 1,
     borderRadius: 100,
-    backgroundColor: "white",
+    backgroundColor: COLORS.BTN_GRADIENT_2,
     width: 4,
     height: 4,
     marginVertical: 8,
@@ -208,24 +207,7 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     fontSize: 17,
   },
-  addBtn: {
-    height: 55,
-    borderRadius: 50,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 18,
-    overflow: "hidden",
-  },
-  btnTitle: {
-    color: "white",
-  },
-  icon: {
-    width: 20,
-    height: 20,
-    marginRight: 12,
-  },
+
   add: {
     flexDirection: "row",
     paddingVertical: 18,
@@ -234,7 +216,7 @@ const styles = StyleSheet.create({
     color: "white",
     borderBottomWidth: 1,
     borderColor: "rgba(255,255,255,.2)",
-    marginBottom: 65
+    marginBottom: 65,
   },
   addTitle: {
     color: "#a4a1a1",

@@ -117,7 +117,7 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
       },
     ];
     return (
-     
+      
           <Layout
             title="Edit User"
             cancel={true}
