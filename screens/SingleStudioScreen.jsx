@@ -17,19 +17,35 @@ import {
 } from "../components";
 import uuid from "react-uuid";
 import { ICONS, COLORS } from "../styles";
-export const SingleStudioScreen = ({
+import { connect } from "react-redux";
+import { addFavorites, removeFavorites, selectFavorites } from "../store/studios";
+import { add } from "react-native-reanimated";
+
+const mapStateToProps = state => ({
+  favorites: selectFavorites(state)
+})
+
+export const SingleStudioScreen = connect(mapStateToProps, {addFavorites, removeFavorites})(({
   route: {
     params: { item: studio, fields },
   },
-  navigation
+  navigation,
+  favorites,
+  removeFavorites,
+  addFavorites
 }) => {
   const options = ["Studio", "Contact"];
   const [section, setSection] = useState(options[0]);
 
 
+  
   const continueHandler = () => {
-    console.log('cont')
-    navigation.navigate('confirmation-screen')
+    navigation.navigate('confirmation-screen', {studio, fields})
+  }
+
+  const favoritesHandler = () => {
+    //removeFavorites(studio)
+    //addFavorites(studio)
   }
   return (
     <ScrollView contentContainerStyle={styles.container} style={styles.container}>
@@ -42,7 +58,7 @@ export const SingleStudioScreen = ({
             <TouchableOpacity>
               <Image style={styles.icon} source={ICONS.share} />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={favoritesHandler}>
               <Image style={styles.icon} source={ICONS.unfav} />
             </TouchableOpacity>
           </View>
@@ -125,7 +141,7 @@ export const SingleStudioScreen = ({
       </View>
     </ScrollView>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

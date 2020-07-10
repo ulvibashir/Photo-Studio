@@ -38,12 +38,12 @@ export const HomeScreen = connect(mapStateToProps, {getStudios})(({
         />
 
         <View style={styles.filterContainer}>
-          <TouchableOpacity style={styles.filterItem}>
+          <View style={styles.filterItem}>
             <Text style={styles.filterText}>{fullDate(fields.date, true)}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.filterItem, styles.border]}>
+          </View>
+          <View style={[styles.filterItem, styles.border]}>
             <Text style={styles.filterText}>{fields.startTime && fields.endTime ? fullTime(fields.startTime,fields.endTime) : '--:--'}</Text>
-          </TouchableOpacity>
+          </View>
           <TouchableOpacity style={styles.filterItem}>
             <Text style={styles.filterText}>Filter</Text>
           </TouchableOpacity>

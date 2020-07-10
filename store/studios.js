@@ -3,16 +3,20 @@ import * as firebase from "firebase";
 //Action types
 const SET_WELCOME_SCREEN_ENABLED = "SET_WELCOME_SCREEN_ENABLED";
 const SET_STUDIOS = "SET_STUDIOS";
+const ADD_FAVORITES = "ADD_FAVORITES";
+const REMOVE_FAVORITES = "REMOVE_FAVORITES";
 
 //Selectors
 export const MODULE_NAME = "studios";
 export const selectWelcomeScreenEnabled = (state) =>
   state[MODULE_NAME].welcomeScreenEnabled;
 export const selectStudios = (state) => state[MODULE_NAME].studios;
+export const selectFavorites = (state) => state[MODULE_NAME].favorites;
 
 const initialState = {
   welcomeScreenEnabled: false,
   studios: [],
+  favorites: [],
 };
 export function reducer(state = initialState, { type, payload }) {
   switch (type) {
@@ -28,6 +32,16 @@ export function reducer(state = initialState, { type, payload }) {
         studios: payload,
       };
 
+    case ADD_FAVORITES:
+      return {
+        ...state,
+        favorites: [payload, ...state.favorites],
+      };
+    case REMOVE_FAVORITES:
+      return {
+        ...state,
+        favorites: state.favorites.filter(item => item.id !== payload.id)
+      };
     default:
       return state;
   }
@@ -39,6 +53,14 @@ export const setWelcomeScreenEnabled = () => ({
 
 export const setStudios = (payload) => ({
   type: SET_STUDIOS,
+  payload,
+});
+export const addFavorites = (payload) => ({
+  type: ADD_FAVORITES,
+  payload,
+});
+export const removeFavorites = (payload) => ({
+  type: REMOVE_FAVORITES,
   payload,
 });
 
@@ -53,7 +75,7 @@ export const getStudios = (setRefreshed) => async (dispatch, getState) => {
       });
     }
     dispatch(setStudios(dataArray));
-    if(setRefreshed) setRefreshed(false)
+    if (setRefreshed) setRefreshed(false);
   } catch (error) {
     console.log(error);
   }
