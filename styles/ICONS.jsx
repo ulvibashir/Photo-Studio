@@ -8,6 +8,10 @@ import add from '../assets/ICONS/add.png'
 import fav from '../assets/ICONS/fav.png'
 import unfav from '../assets/ICONS/unfav.png'
 import share from '../assets/ICONS/share.png'
+import contracts from '../assets/ICONS/contracts.png'
+import support from '../assets/ICONS/support.png'
+import options from '../assets/ICONS/options.png'
+
 
 import home from '../assets/ICONS/BottomTab/home.png'
 import favorites from '../assets/ICONS/BottomTab/heart.png'
@@ -32,7 +36,10 @@ export const ICONS = Object.freeze({
     add,
     fav,
     unfav,
-    share
+    share,
+    contracts,
+    support,
+    options,
 })
 
 export const TAB_ICONS = Object.freeze({

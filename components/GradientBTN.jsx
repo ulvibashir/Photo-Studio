@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
   },
   btnTitle: {
     color: "white",
+    paddingLeft:5
   },
   icon: {
     width: 20,

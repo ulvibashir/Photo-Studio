@@ -1,10 +1,12 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
-import { CustomText } from "../../components";
-import { COLORS, ICONS } from "../../styles";
+import { CustomText } from "./CustomText";
+import { COLORS, ICONS } from "../styles";
+import { useNavigation } from "@react-navigation/native";
 
-export const Card = ({number, cardType  }) => {
-  const name = cardType + ' - ' + number.slice(0,4)
+export const CardItem = ({  card , onPressIcon }) => {
+  const  navigation = useNavigation()
+  const name = card.cardType + ' - ' + card.number.slice(0,4)
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -13,9 +15,12 @@ export const Card = ({number, cardType  }) => {
           {name}
         </CustomText>
       </View>
-      <TouchableOpacity style={styles.row}>
+      <View style={styles.row}>
+  <CustomText style={styles.label}>{card.preferred? "Preferred" : ""}</CustomText>
+      <TouchableOpacity style={styles.row} onPress={onPressIcon}>
         <Image source={ICONS.options} style={styles.options} />
       </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -31,19 +36,27 @@ const styles = StyleSheet.create({
   name: {
     color: "white",
     fontSize: 18,
-    marginHorizontal: 15,
+    // marginHorizontal: 15,
   },
   icon: {
     width: 20,
     height: 20,
+    marginRight: 8
   },
   row: {
-    paddingHorizontal: 18,
-    flexDirection: "row",
+    paddingHorizontal: 10,
+    flexDirection: "row", 
     alignItems: "center",
+    justifyContent: 'space-between'
   },
-  options: {
-    width: 20,
-    height: 20,
-  },
+ label: {
+  color: "white",
+  fontSize: 15,
+  
+  alignSelf: 'center'
+ },
+ options: {
+   width: 5,
+   height: 20
+ }
 });

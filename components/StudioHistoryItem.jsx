@@ -1,9 +1,9 @@
 
 import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { CustomText } from "../../components";
+import { CustomText } from "./CustomText";
 
-export const SingleStudio = ({ name, time,onPress }) => {
+export const StudioHistoryItem = ({ name, time,onPress }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.studio} onPress={onPress}>
@@ -21,16 +21,17 @@ export const SingleStudio = ({ name, time,onPress }) => {
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 16,
+        paddingVertical: 8
     },
   studio: {
-      marginTop: 14,
+      //marginTop: 14,
       backgroundColor: 'grey',
       width: '100%',
       height: 170,
       borderRadius: 30,
       alignItems: 'center',
       justifyContent: 'center',
-      paddingHorizontal: 15,
+      
   },
 name: {
     color:'white',
