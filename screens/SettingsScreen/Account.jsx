@@ -29,7 +29,7 @@ export const Account = connect(mapStateToProps, { logOut })(
       {
         heading: "Settings",
         screens: [
-          { name: "Notifications", route: "" },
+          { name: "Notifications", route: "notification-screen" },
           { name: "Phone Verification", route: "" },
         ],
       },
@@ -93,7 +93,7 @@ export const Account = connect(mapStateToProps, { logOut })(
               start={[0, 0.5]}
               end={[1, 0.5]}
             >
-              <TouchableOpacity style={styles.contractsBtn}>
+              <TouchableOpacity onPress={()=>navigation.navigate('contracts-screen')} style={styles.contractsBtn}>
                 <Text style={styles.btnTitle} weight="medium">
                   Contracts
                 </Text>
@@ -122,7 +122,7 @@ export const Account = connect(mapStateToProps, { logOut })(
             <View>
               <Text style={styles.menuHeader}>{item.heading}</Text>
               {item.screens.map((screen, i) => (
-                <TouchableOpacity key={i}>
+                <TouchableOpacity key={i} onPress={()=>navigation.navigate(screen.route)}>
                   <Text style={styles.menuContent}>{screen.name}</Text>
                 </TouchableOpacity>
               ))}
