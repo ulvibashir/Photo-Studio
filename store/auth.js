@@ -7,21 +7,19 @@ const SET_AUTH_STATUS = "SET_AUTH_STATUS";
 const SET_AUTH_LOGOUT = "SET_LOGOUT";
 const UPDATE_USER = "UPDATE_USER";
 const UPDATE_USER_CARDS = "UPDATE_USER_CARDS";
-
+const SET_AUTH_ERROR = "SET_AUTH_ERROR";
 //Selectors
 export const MODULE_NAME = "auth";
 export const selectAuthStatus = (state) => state[MODULE_NAME].status;
-/* export const selectAuthName = (state) => state[MODULE_NAME].name;
-export const selectAuthSurName = (state) => state[MODULE_NAME].surname;
-export const selectAuthCreationTime = (state) =>
-  state[MODULE_NAME].creationTime; */
 export const selectUserData = (state) => state[MODULE_NAME].userData;
 export const selectUsersCards = (state) => state[MODULE_NAME].userData.cards;
+export const selectAuthError = (state) => state[MODULE_NAME].error;
 
 // Reducer
 
 const initialState = {
   status: false,
+  error: '',
   userData: {
     creationTime: null,
     userID: null,
@@ -35,6 +33,7 @@ const initialState = {
     city: null,
     cards: [],
   },
+  
 };
 
 export function reducer(state = initialState, { type, payload }) {
@@ -43,6 +42,7 @@ export function reducer(state = initialState, { type, payload }) {
       return {
         ...state,
         status: true,
+        error: '',
         userData: {
           ...state.userData,
           ...payload,
@@ -52,6 +52,7 @@ export function reducer(state = initialState, { type, payload }) {
       return {
         ...state,
         status: false,
+        error: '',
         userData: {
           ...state.userData,
           creationTime: null,
@@ -67,13 +68,17 @@ export function reducer(state = initialState, { type, payload }) {
           cards: [],
         },
       };
+      case SET_AUTH_ERROR: 
+      return {
+        ...state,
+        error: payload
+      }
     case UPDATE_USER:
       return {
         ...state,
         userData: {
           ...state.userData,
           ...payload,
-         
         },
       };
     case UPDATE_USER_CARDS:
@@ -109,6 +114,10 @@ export const setUsersCards = (payload) => ({
   type: UPDATE_USER_CARDS,
   payload,
 });
+export const setAuthError = (payload) => ({
+  type: SET_AUTH_ERROR,
+  payload,
+});
 
 // Middlewares
 
@@ -128,7 +137,7 @@ export const signIn = ({ email, password }) => async (dispatch) => {
       });
     }
     console.log(cards, "crt");
-    
+
     dispatch(
       setAuthSuccess({
         userID: uid,
@@ -137,7 +146,8 @@ export const signIn = ({ email, password }) => async (dispatch) => {
       })
     );
   } catch (error) {
-    console.log(error, "login failed");
+    dispatch(setAuthError("Invalid email or password. Please, try again"))
+    console.log(error.message, "login failed");
   }
 };
 
@@ -167,6 +177,7 @@ export const signUp = ({ email, password, name, surname }) => async (
       })
     );
   } catch (error) {
+    
     console.log("sign up failed", error);
   }
 };
@@ -224,22 +235,45 @@ export const updateUser = (data) => async (dispatch) => {
 
 export const updateUserCards = (data) => async (dispatch) => {
   try {
-    console.log(data, "cards");
     const { uid } = fbApp.auth.currentUser;
     fbApp.data.ref(`users/${uid}/cards`).push(data);
 
     const cardsObj = (
       await fbApp.data.ref(`users/${uid}/cards`).once("value")
     ).val();
+
     const cards = [];
     for (let key in cardsObj) {
       cards.push({
         ...cardsObj[key],
+        id: key,
       });
     }
-    console.log(cards, "crt");
+
     dispatch(setUsersCards([...cards]));
   } catch (error) {
     console.log(error, "update card");
+  }
+};
+
+export const deleteUserCard = (key) => async (dispatch) => {
+  try {
+    const { uid } = fbApp.auth.currentUser;
+    await fbApp.data.ref(`users/${uid}/cards/${key}`).remove();
+    const cardsObj = (
+      await fbApp.data.ref(`users/${uid}/cards`).once("value")
+    ).val();
+
+    const cards = [];
+    for (let key in cardsObj) {
+      cards.push({
+        ...cardsObj[key],
+        id: key,
+      });
+    }
+
+    dispatch(setUsersCards([...cards]));
+  } catch (error) {
+    console.log(error, "delete error");
   }
 };
