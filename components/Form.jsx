@@ -46,6 +46,7 @@ export const Form = ({ fields, inputs }) => {
             <CustomText style={styles.label}>{item.label}</CustomText>
             <TextInput
               // blurOnSubmit={false}
+              maxLength={!!item.maxLength ? item.maxLength : null}
               key={item.value}
               keyboardType={item.value == "phone" ? "number-pad" : "default"}
               secureTextEntry={item.value === "password"}
@@ -61,11 +62,7 @@ export const Form = ({ fields, inputs }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
- 
-    
- 
-  },
+  
   inputWrapper: {
     marginTop: 12,
   },
@@ -74,9 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'RobotoRegular'
   },
-  inputWrapper: {
-    marginTop: 12,
-  },
+ 
   input: {
     borderBottomWidth: 1,
     borderColor: COLORS.BG_GRADIENT_2,

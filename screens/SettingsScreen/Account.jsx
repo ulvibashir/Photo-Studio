@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 
 import { logOut, selectUserData } from "../../store/auth";
 import { COLORS, ICONS } from "../../styles";
-import { Btn } from "../../components";
+import { Btn, GradientBTN } from "../../components";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -93,25 +93,21 @@ export const Account = connect(mapStateToProps, { logOut })(
               start={[0, 0.5]}
               end={[1, 0.5]}
             >
+
               <TouchableOpacity onPress={()=>navigation.navigate('contracts-screen')} style={styles.contractsBtn}>
+ 
+                <Image source={ICONS.contracts} style={styles.icon}/>
+
                 <Text style={styles.btnTitle} weight="medium">
                   Contracts
                 </Text>
               </TouchableOpacity>
             </LinearGradient>
 
-            <TouchableOpacity style={styles.btn}>
-              <LinearGradient
-                style={styles.bgGradient}
-                colors={[COLORS.BTN_GRADIENT_1, COLORS.BTN_GRADIENT_2]}
-                start={[0, 0.5]}
-                end={[1, 0.5]}
-              />
-
-              <Text style={styles.btnTitle} weight="medium">
-                Support
-              </Text>
-            </TouchableOpacity>
+            <GradientBTN
+            title="Support"
+            iconPath={ICONS.support}
+            style={styles.btn}/>
           </View>
         </View>
 
@@ -203,6 +199,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 50,
     borderColor: "transparent",
+    flexDirection: 'row',
     alignItems: "center",
     justifyContent: "center",
   },
@@ -220,6 +217,12 @@ const styles = StyleSheet.create({
   btnTitle: {
     fontSize: 15,
     color: "white",
+    paddingLeft: 5
+  },
+  icon :{
+    width: 20,
+    height: 20,
+    
   },
   cricleGradient: {
     margin: 1,

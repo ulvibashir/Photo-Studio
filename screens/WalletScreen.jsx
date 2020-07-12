@@ -4,20 +4,25 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-  Image,
+  Modal,
   Dimensions,
 } from "react-native";
-
-import { LinearGradient } from "expo-linear-gradient";
-
-import { COLORS, ICONS } from "../../styles";
-import { CustomText as Text, CustomText, GradientBTN } from "../../components";
-import { SingleStudio } from "./SingleStudio";
-import { FlatList } from "react-native-gesture-handler";
-import { Card } from "./Card";
 import { connect } from "react-redux";
-import { selectUsersCards, selectAuthStatus } from "../../store/auth";
+import { LinearGradient } from "expo-linear-gradient";
 import uuid from "react-uuid";
+
+import { COLORS, ICONS } from "../styles";
+import {
+  CustomText as Text,
+  GradientBTN,
+  StudioHistoryList,
+  CardList,
+} from "../components";
+import {
+  selectUsersCards,
+  selectAuthStatus,
+  deleteUserCard,
+} from "../store/auth";
 
 const options = ["My Wallet", "Payment"];
 
@@ -26,22 +31,16 @@ const mapStateToProps = (state) => ({
   status: selectAuthStatus(state),
 });
 
-export const WalletScreen = connect(mapStateToProps)(
-  ({ navigation, cards, status }) => {
+export const WalletScreen = connect(mapStateToProps, { deleteUserCard })(
+  ({ navigation, cards, status, deleteUserCard }) => {
     const [section, setSection] = useState(options[0]);
     const data = [
+      { name: "Studio A: Bookshelf", time: "5 hours" },
+      { name: "Studio B: Bookshelf", time: "5 hours" },
+      { name: "Studio C: Bookshelf", time: "5 hours" },
       { name: "Studio D: Bookshelf", time: "5 hours" },
-      { name: "Studio D: Bookshelf", time: "5 hours" },
-      { name: "Studio D: Bookshelf", time: "5 hours" },
-      { name: "Studio D: Bookshelf", time: "5 hours" },
-      { name: "Studio D: Bookshelf", time: "5 hours" },
+      { name: "Studio R: Bookshelf", time: "5 hours" },
     ];
-
-    /*  const borderStyle = {
-      height: 68,
-      borderColor: COLORS.BG_GRADIENT_2,
-      marginBottom: 5,
-    }; */
 
     const navigateCardForm = () => {
       if (status) {
@@ -59,6 +58,12 @@ export const WalletScreen = connect(mapStateToProps)(
         ]);
       }
     };
+    const handleDelete = (id) => {
+      Alert.alert("Do you want to remove this card from your wallet?", "", [
+        { text: "OK", onPress: () => deleteUserCard(id) },
+        { text: "Cancel", onPress: () => console.log("cancel") },
+      ]);
+    };
     return (
       <View style={styles.container}>
         <LinearGradient
@@ -70,19 +75,6 @@ export const WalletScreen = connect(mapStateToProps)(
         <View
           style={[styles.dot, { left: section === options[0] ? "25%" : "75%" }]}
         />
-        {/* <RadioBtn
-        options={options}
-        value={section}
-        onValueChange={(v) => setSection(v)}
-        style={[
-          styles.radio,
-          styles.border,
-          borderStyle,
-          section === options[0]
-            ? { borderRightWidth: 1 }
-            : { borderLeftWidth: 1 },
-        ]}
-      /> */}
 
         <View style={styles.heading}>
           {options.map((option) => (
@@ -103,40 +95,26 @@ export const WalletScreen = connect(mapStateToProps)(
 
         <View style={styles.content}>
           {section === "My Wallet" ? (
-            <FlatList
+            <StudioHistoryList
               data={data}
-              renderItem={({ item }) => (
-                <SingleStudio
-                  {...item}
-                  onPress={() => navigation.navigate("studio-screen")}
-                />
-              )}
-              keyExtractor={() => uuid()}
+              onPress={() => navigation.navigate("studio-screen")}
             />
           ) : !!cards.length ? (
-            <FlatList
-              keyExtractor={() => uuid()}
-              data={cards.slice(0).reverse()}
-              renderItem={({ item }) => <Card {...item} />}
-              ListFooterComponent={
-                <TouchableOpacity
-                  style={styles.add}
-                  onPress={() => {
-                    navigateCardForm();
-                  }}
-                >
-                  <Image source={ICONS.add} style={styles.icon} />
-                  <CustomText style={styles.addTitle}>Add new card</CustomText>
-                </TouchableOpacity>
-              }
+            <CardList
+              key={() => uuid()}
+              cards={cards}
+              deleteUserCard={handleDelete}
+              onPress={() => {
+                navigateCardForm();
+              }}
             />
           ) : (
             <View style={styles.btnContainer}>
-              <CustomText style={styles.text}>
+              <Text style={styles.text}>
                 Every month roundup the freshest new web sites that have been
                 released in the previous four weeks, with an eye-out for new
                 ideas.
-              </CustomText>
+              </Text>
 
               <GradientBTN
                 style={{ marginTop: 18 }}
@@ -155,28 +133,15 @@ export const WalletScreen = connect(mapStateToProps)(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
-    // justifyContent: "center",
-    //alignItems: "center",
   },
 
   bgGradient: {
     ...StyleSheet.absoluteFill,
   },
-  radio: {
-    color: "white",
-    width: "100%",
-    textAlign: "center",
-    justifyContent: "space-between",
-    fontSize: 20,
-    fontWeight: "bold",
-    opacity: 1,
-    borderBottomWidth: 0,
-    paddingVertical: 17,
-    backgroundColor: COLORS.HEADER_COLOR,
-  },
+
   heading: {
     height: 65,
+    paddingVertical: 16,
     color: "white",
     flexDirection: "row",
     width: "100%",
@@ -196,6 +161,7 @@ const styles = StyleSheet.create({
   option: {
     color: "white",
     fontSize: 20,
+    padding: 20,
   },
   btnContainer: {
     paddingHorizontal: 20,
@@ -207,19 +173,22 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     fontSize: 17,
   },
-
-  add: {
+  addBtn: {
+    height: 55,
+    borderRadius: 50,
+    width: "100%",
     flexDirection: "row",
-    paddingVertical: 18,
     justifyContent: "center",
     alignItems: "center",
-    color: "white",
-    borderBottomWidth: 1,
-    borderColor: "rgba(255,255,255,.2)",
-    marginBottom: 65,
+    marginTop: 18,
+    overflow: "hidden",
   },
-  addTitle: {
-    color: "#a4a1a1",
-    fontSize: 17,
+  btnTitle: {
+    color: "white",
+  },
+  icon: {
+    width: 20,
+    height: 20,
+    marginRight: 12,
   },
 });
