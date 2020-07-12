@@ -19,7 +19,6 @@ import uuid from "react-uuid";
 import { ICONS, COLORS } from "../styles";
 import { connect } from "react-redux";
 import { addFavorites, removeFavorites, selectFavorites } from "../store/studios";
-import { add } from "react-native-reanimated";
 
 const mapStateToProps = state => ({
   favorites: selectFavorites(state)
@@ -36,16 +35,31 @@ export const SingleStudioScreen = connect(mapStateToProps, {addFavorites, remove
 }) => {
   const options = ["Studio", "Contact"];
   const [section, setSection] = useState(options[0]);
-
-
   
-  const continueHandler = () => {
-    navigation.navigate('confirmation-screen', {studio, fields})
+  const checkIsFav = () => {
+    for(let item of favorites) {
+      if(item.id === studio.id) {
+        return true;
+      }
+    }
+    return false;
   }
+  let isFav = checkIsFav();
+
+  const continueHandler = () => {
+    navigation.navigate("confirmation-screen", { studio, fields });
+  };
 
   const favoritesHandler = () => {
-    //removeFavorites(studio)
-    //addFavorites(studio)
+    if (isFav) {
+      removeFavorites(studio);
+    } else {
+      addFavorites(studio);
+    }
+  };
+  
+  const shareHandler = () => {
+    console.log('share btn')
   }
   return (
     <ScrollView contentContainerStyle={styles.container} style={styles.container}>
@@ -55,11 +69,11 @@ export const SingleStudioScreen = connect(mapStateToProps, {addFavorites, remove
             <Image style={styles.icon} source={ICONS.back} />
           </TouchableOpacity>
           <View style={styles.leftHeader}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={shareHandler}>
               <Image style={styles.icon} source={ICONS.share} />
             </TouchableOpacity>
             <TouchableOpacity onPress={favoritesHandler}>
-              <Image style={styles.icon} source={ICONS.unfav} />
+              <Image style={styles.icon} source={isFav ? ICONS.fav : ICONS.unfav} />
             </TouchableOpacity>
           </View>
         </View>

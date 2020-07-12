@@ -5,11 +5,15 @@ import { COLORS } from '../styles';
 import { CustomText as Text } from './CustomText';
 import { useNavigation } from '@react-navigation/native';
 
-export const StudioListItem = ({ item, fields }) => {
+export const StudioListItem = ({ item, fields = {}, isFav = false }) => {
   const navigation = useNavigation();
   const onPressHandler = () => {
-    navigation.navigate('single-studio-screen', {item, fields})
-  }
+    if (isFav) {
+      navigation.navigate("single-studio-screen-fav", { item, fields });
+    } else {
+      navigation.navigate("single-studio-screen", { item, fields });
+    }
+  };
   return (
     <TouchableOpacity style={styles.container} onPress={onPressHandler}>
       <ImageBackground
@@ -31,12 +35,16 @@ export const StudioListItem = ({ item, fields }) => {
           />
           <View style={styles.row}>
             <View>
-              <Text weight="bold" style={[styles.main, styles.space]}>Studio: {item.studioName}</Text>
+              <Text weight="bold" style={[styles.main, styles.space]}>
+                Studio: {item.studioName}
+              </Text>
               <Text style={styles.desc}>{item.Adress}</Text>
             </View>
             <View>
-              <Text style={[styles.desc,styles.space]}>from</Text>
-              <Text weight="bold" style={styles.main}>{item.rentPrice}$</Text>
+              <Text style={[styles.desc, styles.space]}>from</Text>
+              <Text weight="bold" style={styles.main}>
+                {item.rentPrice}$
+              </Text>
             </View>
           </View>
         </View>
