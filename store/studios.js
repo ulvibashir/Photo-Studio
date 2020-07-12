@@ -40,7 +40,7 @@ export function reducer(state = initialState, { type, payload }) {
     case REMOVE_FAVORITES:
       return {
         ...state,
-        favorites: state.favorites.filter(item => item.id !== payload.id)
+        favorites: [...state.favorites.filter(item => item.id !== payload.id)]
       };
     default:
       return state;

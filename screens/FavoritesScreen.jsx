@@ -1,21 +1,37 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import { Layout } from "../commons";
+import { connect } from "react-redux";
+import { selectFavorites } from "../store/studios";
+import { StudioListItem } from "../components/StudioListItem";
+import { COLORS } from "../styles";
 
-export const FavoritesScreen = () => {
+const mapStateToProps = state => ({
+  favorites: selectFavorites(state)
+})
+
+export const FavoritesScreen = connect(mapStateToProps)(({favorites}) => {
+  const fields = {} // need to write fields to state
   return (
-    <Layout>
-      <View style={styles.container}>
-        <Text>FavoritesScreen</Text>
+    <Layout back={true} title="Favorites">
+     <View style={styles.container}>
+
+          <FlatList
+            data={favorites}
+            renderItem={({ item }) => <StudioListItem isFav={true} item={item} fields={fields} />}
+          />
       </View>
-    </Layout>
+  </Layout>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: COLORS.HEADER_COLOR
   },
+  bgGradient: {
+    //...StyleSheet.absoluteFill
+  },
+ 
 });
