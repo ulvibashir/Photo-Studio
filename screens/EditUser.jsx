@@ -51,6 +51,7 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
       {
         label: "First Name",
         value: "name",
+        keyboardType: "default",
         onChangeText: (v) => {
           handleFieldChange("name", v);
         },
@@ -58,6 +59,7 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
       {
         label: "Last Name",
         value: "surname",
+        keyboardType: "default",
         onChangeText: (v) => {
           handleFieldChange("surname", v);
         },
@@ -66,6 +68,7 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
       {
         label: "E-mail",
         value: "email",
+        keyboardType: 'email-address',
         onChangeText: (v) => {
           handleFieldChange("email", v);
         },
@@ -73,6 +76,7 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
       {
         label: "Password",
         value: "password",
+        keyboardType: 'default',
         onChangeText: (v) => {
           handleFieldChange("password", v);
         },
@@ -80,6 +84,7 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
       {
         label: "Image",
         value: "image",
+        keyboardType: 'default',
         onChangeText: (v) => {
           handleFieldChange("image", v);
         },
@@ -87,14 +92,16 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
       {
         label: "Phone",
         value: "phone",
+        keyboardType: 'numeric',
         onChangeText: (v) => {
           handleFieldChange("phone", v);
         },
       },
 
       {
-        label: "Preffered City",
+        label: "Preferred City",
         value: "city",
+        keyboardType: 'numeric',
         onChangeText: (v) => {
           handleFieldChange("city", v);
         },
@@ -102,6 +109,7 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
       {
         label: "I am a ",
         value: "speciality",
+        keyboardType: 'numeric',
         onChangeText: (v) => {
           handleFieldChange("speciality", v);
         },
