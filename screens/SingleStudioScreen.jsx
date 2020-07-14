@@ -47,6 +47,7 @@ export const SingleStudioScreen = connect(mapStateToProps, {addFavorites, remove
   let isFav = checkIsFav();
 
   const continueHandler = () => {
+    console.log(fields)
     navigation.navigate("confirmation-screen", { studio, fields });
   };
 
