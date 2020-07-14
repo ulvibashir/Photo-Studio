@@ -11,7 +11,11 @@ const mapStateToProps = state => ({
 })
 
 export const FavoritesScreen = connect(mapStateToProps)(({favorites}) => {
-  const fields = {} // need to write fields to state
+  const fields = {
+    date: "2020-07-14T12:14:03.492Z",
+    endTime: "2020-07-14T12:30:03.492Z",
+    startTime: "2020-07-14T12:14:03.492Z",
+  } // temproray dummy data
   return (
     <Layout back={true} title="Favorites">
      <View style={styles.container}>
