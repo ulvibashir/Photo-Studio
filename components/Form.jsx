@@ -48,7 +48,7 @@ export const Form = ({ fields, inputs }) => {
               // blurOnSubmit={false}
               maxLength={!!item.maxLength ? item.maxLength : null}
               key={item.value}
-              keyboardType={item.value == "phone" ? "number-pad" : "default"}
+              keyboardType={item.keyboardType}
               secureTextEntry={item.value === "password"}
               onChangeText={item.onChangeText}
               value={fields[item.value]}
