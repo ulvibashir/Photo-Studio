@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     fontSize: 23,
     paddingBottom: 12 ,
+    marginBottom: 15
   },
   error: {
     margin: 10,
