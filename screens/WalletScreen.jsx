@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -21,26 +21,37 @@ import {
 import {
   selectUsersCards,
   selectAuthStatus,
+  selectUserID,
   deleteUserCard,
 } from "../store/auth";
+import { selectBookings, loadBook } from "../store/bookings";
 
 const options = ["My Wallet", "Payment"];
 
 const mapStateToProps = (state) => ({
   cards: selectUsersCards(state),
   status: selectAuthStatus(state),
+  userID: selectUserID(state),
+  bookings: selectBookings(state),
 });
 
-export const WalletScreen = connect(mapStateToProps, { deleteUserCard })(
-  ({ navigation, cards, status, deleteUserCard }) => {
+export const WalletScreen = connect(mapStateToProps, {
+  deleteUserCard,
+  loadBook,
+})(
+  ({
+    navigation,
+    cards,
+    status,
+    userID,
+    bookings,
+    deleteUserCard,
+    loadBook,
+  }) => {
     const [section, setSection] = useState(options[0]);
-    const data = [
-      { name: "Studio A: Bookshelf", time: "5 hours" },
-      { name: "Studio B: Bookshelf", time: "5 hours" },
-      { name: "Studio C: Bookshelf", time: "5 hours" },
-      { name: "Studio D: Bookshelf", time: "5 hours" },
-      { name: "Studio R: Bookshelf", time: "5 hours" },
-    ];
+    const userBookings = bookings.filter(
+      (booking) => booking.userID === userID
+    );
 
     const navigateCardForm = () => {
       if (status) {
@@ -64,6 +75,9 @@ export const WalletScreen = connect(mapStateToProps, { deleteUserCard })(
         { text: "Cancel", onPress: () => console.log("cancel") },
       ]);
     };
+    useEffect(() => {
+      loadBook();
+    }, [userID]);
     return (
       <View style={styles.container}>
         <LinearGradient
@@ -96,8 +110,9 @@ export const WalletScreen = connect(mapStateToProps, { deleteUserCard })(
         <View style={styles.content}>
           {section === "My Wallet" ? (
             <StudioHistoryList
-              data={data}
-              onPress={() => navigation.navigate("studio-screen")}
+            
+              data={bookings}
+              
             />
           ) : !!cards.length ? (
             <CardList
