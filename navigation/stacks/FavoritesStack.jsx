@@ -11,7 +11,6 @@ export const FavoritesStack = () => {
       <Navigator headerMode="none">
           <Screen name="favorites-screen" component={FavoritesScreen}/>
           <Screen name="single-studio-screen-fav" component={SingleStudioScreen} />
-
       </Navigator>
   )
 }

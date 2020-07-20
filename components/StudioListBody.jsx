@@ -9,9 +9,12 @@ import {
 } from "react-native";
 import { StudioListItem } from "./StudioListItem";
 import { connect } from "react-redux";
-import { getStudios } from "../store/studios";
+import { getStudios, selectFields } from "../store/studios";
 
-export const StudioListBody = connect(null, { getStudios })(
+const mapStateToProps = state => ({
+  fields: selectFields(state)
+})
+export const StudioListBody = connect(mapStateToProps, { getStudios })(
   ({ data, getStudios, fields }) => {
     const [refreshed, setRefreshed] = useState(false);
 

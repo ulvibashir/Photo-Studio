@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
       //marginTop: 14,
       backgroundColor: 'grey',
       width: '100%',
-      height: 170,
+      height: 80,
       borderRadius: 30,
       alignItems: 'center',
       justifyContent: 'center',
@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
   },
 name: {
     color:'white',
-    fontSize: 19,
+    fontSize: 16,
 },
 time: {
-    fontSize:21,
+    fontSize:18,
     color: 'white',
 }
 });
