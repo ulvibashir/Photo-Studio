@@ -5,6 +5,7 @@ const SET_WELCOME_SCREEN_ENABLED = "SET_WELCOME_SCREEN_ENABLED";
 const SET_STUDIOS = "SET_STUDIOS";
 const ADD_FAVORITES = "ADD_FAVORITES";
 const REMOVE_FAVORITES = "REMOVE_FAVORITES";
+const SET_FIELDS = 'SET_FIELDS';
 
 //Selectors
 export const MODULE_NAME = "studios";
@@ -12,11 +13,18 @@ export const selectWelcomeScreenEnabled = (state) =>
   state[MODULE_NAME].welcomeScreenEnabled;
 export const selectStudios = (state) => state[MODULE_NAME].studios;
 export const selectFavorites = (state) => state[MODULE_NAME].favorites;
+export const selectFields = (state) => state[MODULE_NAME].fields;
 
 const initialState = {
   welcomeScreenEnabled: false,
   studios: [],
   favorites: [],
+  fields: {
+    city: null,
+    date: null,
+    startTime: null,
+    endTime: null,
+  }
 };
 export function reducer(state = initialState, { type, payload }) {
   switch (type) {
@@ -25,7 +33,11 @@ export function reducer(state = initialState, { type, payload }) {
         ...state,
         welcomeScreenEnabled: false,
       };
-
+      case SET_FIELDS: 
+      return {
+        ...state,
+        fields: payload
+      }
     case SET_STUDIOS:
       return {
         ...state,
@@ -61,6 +73,10 @@ export const addFavorites = (payload) => ({
 });
 export const removeFavorites = (payload) => ({
   type: REMOVE_FAVORITES,
+  payload,
+});
+export const setFields = (payload) => ({
+  type: SET_FIELDS,
   payload,
 });
 
