@@ -7,20 +7,17 @@ import { StudioListBody, CustomText as Text} from "../components";
 import { COLORS } from "../styles";
 import { fullTime, fullDate } from "../utilities/extraFunctions";
 import { connect } from "react-redux";
-import { getStudios, selectStudios } from "../store/studios";
+import { getStudios, selectStudios, selectFields } from "../store/studios";
 
 const mapStateToProps = state => ({
-  studios: selectStudios(state)
+  studios: selectStudios(state),
+  fields: selectFields(state)
 })
 export const HomeScreen = connect(mapStateToProps, {getStudios})(({
   navigation,
   getStudios,
   studios,
-  route: {
-    params: {
-      fields,
-    },
-  },
+  fields
 }) => {
 
   useEffect(() => {
@@ -48,7 +45,7 @@ export const HomeScreen = connect(mapStateToProps, {getStudios})(({
             <Text style={styles.filterText}>Filter</Text>
           </TouchableOpacity>
         </View>
-        <StudioListBody data={studios} fields={fields}/>
+        <StudioListBody data={studios}/>
       </View>
     </Layout>
   );

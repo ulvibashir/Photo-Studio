@@ -5,18 +5,24 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Layout } from "../commons";
 import { GradientBTN, CustomText as Text } from "../components";
 import { COLORS } from "../styles";
-import { setStudios } from "../store/studios";
+import { setStudios, selectFields } from "../store/studios";
 import { fullDate, fullTime } from "../utilities/extraFunctions";
+import { connect } from "react-redux";
+import { createBook } from "../store/bookings";
 
-
-export const ConfirmationScreen = ({
+const mapStateToProps = state => ({
+  fields: selectFields(state)
+})
+export const ConfirmationScreen = connect(mapStateToProps, {createBook})(({
   route: {
-    params: { studio, fields },
+    params: { studio },
   },
+  fields,
   navigation,
+  createBook
 }) => {
  const bookHandler = () => {
-   console.log('book part')
+   createBook(studio, fields)
  }
   return (
     <Layout back={true}>
@@ -58,7 +64,7 @@ export const ConfirmationScreen = ({
       </ScrollView>
     </Layout>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

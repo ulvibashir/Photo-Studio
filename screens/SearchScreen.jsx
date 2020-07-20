@@ -8,7 +8,11 @@ import { COLORS } from "../styles";
 import { CustomText as Text } from "../components";
 import {dummyCities, pickerValues as pick} from '../utilities/dummyCity'
 import { fullDate, fullTime, timeConvert } from "../utilities/extraFunctions";
-export const SearchScreen = ({ navigation }) => {
+import { connect } from "react-redux";
+import { setFields as setFieldsRedux } from "../store/studios";
+
+
+export const SearchScreen = connect(null, {setFieldsRedux})(({ navigation, setFieldsRedux }) => {
   const [fields, setFields] = useState({
     city: "Daxi",
     date: null,
@@ -37,8 +41,8 @@ export const SearchScreen = ({ navigation }) => {
     //   Alert.alert('Select date')
     // }
 
-
-    navigation.navigate("home-screen", {fields});
+    setFieldsRedux(fields);
+    navigation.navigate("home-screen");
 
   };
 
@@ -153,7 +157,7 @@ export const SearchScreen = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

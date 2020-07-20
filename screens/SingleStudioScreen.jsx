@@ -26,7 +26,7 @@ const mapStateToProps = state => ({
 
 export const SingleStudioScreen = connect(mapStateToProps, {addFavorites, removeFavorites})(({
   route: {
-    params: { item: studio, fields },
+    params: { item: studio },
   },
   navigation,
   favorites,
@@ -47,8 +47,7 @@ export const SingleStudioScreen = connect(mapStateToProps, {addFavorites, remove
   let isFav = checkIsFav();
 
   const continueHandler = () => {
-    console.log(fields)
-    navigation.navigate("confirmation-screen", { studio, fields });
+    navigation.navigate("confirmation-screen", { studio });
   };
 
   const favoritesHandler = () => {
