@@ -8,6 +8,7 @@ const SET_AUTH_LOGOUT = "SET_LOGOUT";
 const UPDATE_USER = "UPDATE_USER";
 const UPDATE_USER_CARDS = "UPDATE_USER_CARDS";
 const SET_AUTH_ERROR = "SET_AUTH_ERROR";
+
 //Selectors
 export const MODULE_NAME = "auth";
 export const selectAuthStatus = (state) => state[MODULE_NAME].status;
@@ -19,7 +20,7 @@ export const selectAuthError = (state) => state[MODULE_NAME].error;
 
 const initialState = {
   status: false,
-  error: '',
+  error: "",
   userData: {
     creationTime: null,
     userID: null,
@@ -33,7 +34,6 @@ const initialState = {
     city: null,
     cards: [],
   },
-  
 };
 
 export function reducer(state = initialState, { type, payload }) {
@@ -42,7 +42,7 @@ export function reducer(state = initialState, { type, payload }) {
       return {
         ...state,
         status: true,
-        error: '',
+        error: "",
         userData: {
           ...state.userData,
           ...payload,
@@ -52,7 +52,7 @@ export function reducer(state = initialState, { type, payload }) {
       return {
         ...state,
         status: false,
-        error: '',
+        error: "",
         userData: {
           ...state.userData,
           creationTime: null,
@@ -68,11 +68,11 @@ export function reducer(state = initialState, { type, payload }) {
           cards: [],
         },
       };
-      case SET_AUTH_ERROR: 
+    case SET_AUTH_ERROR:
       return {
         ...state,
-        error: payload
-      }
+        error: payload,
+      };
     case UPDATE_USER:
       return {
         ...state,
@@ -93,6 +93,7 @@ export function reducer(state = initialState, { type, payload }) {
       return state;
   }
 }
+
 // Action creators
 export const setAuthStatus = (payload) => ({
   type: SET_AUTH_STATUS,
@@ -136,7 +137,6 @@ export const signIn = ({ email, password }) => async (dispatch) => {
         ...cardsObj[key],
       });
     }
-    console.log(cards, "crt");
 
     dispatch(
       setAuthSuccess({
@@ -146,7 +146,7 @@ export const signIn = ({ email, password }) => async (dispatch) => {
       })
     );
   } catch (error) {
-    dispatch(setAuthError("Invalid email or password. Please, try again"))
+    dispatch(setAuthError("Invalid email or password. Please, try again"));
     console.log(error.message, "login failed");
   }
 };
@@ -177,7 +177,6 @@ export const signUp = ({ email, password, name, surname }) => async (
       })
     );
   } catch (error) {
-    
     console.log("sign up failed", error);
   }
 };
@@ -212,7 +211,6 @@ export const updateUser = (data) => async (dispatch) => {
       email,
       password
     );
-    console.log(credential);
 
     dispatch(setUserInfo({ ...data }));
 

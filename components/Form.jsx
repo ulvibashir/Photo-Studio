@@ -20,32 +20,12 @@ export const Form = ({ fields, inputs }) => {
 
   return (
     <ScrollView style={styles.container}>
-      {/* <FlatList
-        keyboardShouldPersistTaps="always"
-        data={inputs}
-        renderItem={({ item }) => (
-          <View style={styles.inputWrapper}>
-            <CustomText style={styles.label}>{item.label}</CustomText>
-            <TextInput
-              blurOnSubmit={false}
-              key={item.value}
-              keyboardType={item.value == "phone" ? "number-pad" : "default"}
-              secureTextEntry={item.value === "password"}
-              onChangeText={item.onChangeText}
-              value={fields[item.value]}
-              style={styles.input}
-            />
-          </View>
-        )}
-        keyExtractor={(item, i) => i.toString()}
-      /> */}
-      
+     
       {
         inputs.map((item, index) => (
           <View style={styles.inputWrapper} key={index}>
             <CustomText style={styles.label}>{item.label}</CustomText>
             <TextInput
-              // blurOnSubmit={false}
               maxLength={!!item.maxLength ? item.maxLength : null}
               key={item.value}
               keyboardType={item.keyboardType}
