@@ -13,7 +13,7 @@ export const StudioHoursScreen = ({
   },
 }) => {
   const date = new Date(fields.date);
-  const fullDate = `${date.getDay()}.${date.getMonth()}.${date.getFullYear()}`;
+  const fullDate = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`;
   return (
     <Layout cancel={true} title={studioName}>
       <LinearGradient
