@@ -17,7 +17,7 @@ export const FavoritesScreen = connect(mapStateToProps)(({favorites}) => {
     startTime: "2020-07-14T12:14:03.492Z",
   } // temproray dummy data
   return (
-    <Layout back={true} title="Favorites">
+    <Layout title="Favorites">
      <View style={styles.container}>
 
           <FlatList

@@ -7,7 +7,7 @@ export const StudioHistoryList = ({ data}) => {
     <View style={styles.container} > 
    
         <FlatList
-          data={data}
+          data={data.slice(0).reverse()}
           renderItem={({ item }) => <StudioHistoryItem key={item.id} {...item} />}
           keyExtractor={(item)=> item.id}
         />

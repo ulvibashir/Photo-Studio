@@ -10,3 +10,4 @@ export { Form } from "./Form";
 export { GradientBTN } from "./GradientBTN";
 export { StudioHistoryList } from "./StudioHistoryList";
 export { CardList } from "./CardList";
+export {BookingItem} from './BookingItem'
