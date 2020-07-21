@@ -12,7 +12,10 @@ export const StudioHistoryItem = ({ studioName, imgArray, fields }) => {
   const navigation  = useNavigation()
   const endTime = new Date(fields.endTime).getHours();
   const startTime = new Date(fields.startTime).getHours();
+  const endMinute = new Date(fields.endTime).getMinutes();
+  const startMinute = new Date(fields.startTime).getMinutes();
   const hours = endTime - startTime;
+  const minutes = endMinute - startMinute
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -28,7 +31,7 @@ export const StudioHistoryItem = ({ studioName, imgArray, fields }) => {
             {studioName}
           </CustomText>
           <CustomText weight="bold" style={styles.time}>
-            {hours} hours
+            {hours} hours {minutes} minutes
           </CustomText>
         </ImageBackground>
       </TouchableOpacity>

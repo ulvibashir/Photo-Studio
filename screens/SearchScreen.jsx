@@ -14,7 +14,7 @@ import { setFields as setFieldsRedux } from "../store/studios";
 
 export const SearchScreen = connect(null, {setFieldsRedux})(({ navigation, setFieldsRedux }) => {
   const [fields, setFields] = useState({
-    city: "Daxi",
+    city: "All",
     date: null,
     startTime: null,
     endTime: null,
@@ -27,23 +27,40 @@ export const SearchScreen = connect(null, {setFieldsRedux})(({ navigation, setFi
 
   const validate = () => {
     if (
-      fields.date === null
-      //  || fields.startTime === null ||
-      // fields.endTime === null
-    )
+      fields.date === null ||
+      fields.startTime === null ||
+      fields.endTime === null
+    ) {
+      Alert.alert("Select Date & Time");
       return false;
-    return true;
+    } else {
+      const start = new Date(fields.startTime);
+      const end = new Date(fields.endTime);
+      const date = new Date(fields.date).getDate();
+      const today = new Date(Date.now()).getDate();
+      // console.log(date >= today)
+      //  console.log(start < end)
+
+      if (date < today) {
+        Alert.alert("Please fix date");
+        return false;
+      }
+
+      if (start >= end) {
+        Alert.alert("Please fix start & end time");
+        return false;
+      }
+      return true
+    }
   };
   const onSearchHandler = () => {
-    // if(validate()) {
-    //   navigation.navigate("home-screen", {fields});
-    // } else {
-    //   Alert.alert('Select date')
-    // }
-
-    setFieldsRedux(fields);
-    navigation.navigate("home-screen");
-
+    if (validate()) {
+      setFieldsRedux(fields);
+      navigation.navigate("home-screen");
+     
+    } else {
+     
+    }
   };
 
   const filedsChangeHandler = (name, value) => {

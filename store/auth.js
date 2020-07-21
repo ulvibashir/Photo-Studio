@@ -1,5 +1,6 @@
 import fbApp from "../firebaseInit";
 import * as firebase from "firebase";
+import { removeAllBookings } from "./bookings";
 
 
 //Action types
@@ -184,7 +185,9 @@ export const logOut = () => (dispatch) => {
   try {
     fbApp.auth.signOut();
   
+    //dispatch(removeAllBookings());
     dispatch(setAuthLogOut());
+
   } catch (error) {
     console.log(error, "logout");
   }
@@ -204,7 +207,6 @@ export const updateUser = (data) => async (dispatch) => {
       city,
       speciality,
     } = data;
-
     const user = (await fbApp.data.ref(`users/${uid}`).once("value")).val();
 
     const credential = firebase.auth.EmailAuthProvider.credential(

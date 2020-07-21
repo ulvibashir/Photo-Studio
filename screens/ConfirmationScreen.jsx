@@ -23,6 +23,8 @@ export const ConfirmationScreen = connect(mapStateToProps, {createBook})(({
 }) => {
  const bookHandler = () => {
    createBook(studio, fields)
+   navigation.popToTop();
+   navigation.navigate('bookings-stack')
  }
   return (
     <Layout back={true}>

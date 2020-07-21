@@ -16,3 +16,5 @@ export { CardForm } from "./CardForm";
 export {StudioHoursScreen} from './StudioHoursScreen'
 export { EditUser } from "./EditUser";
 
+export {BookingsInfoScreen} from './BookingsInfoScreen'
+

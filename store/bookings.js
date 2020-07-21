@@ -5,6 +5,7 @@ import { selectUserData, selectAuthStatus } from "./auth";
 //Action types
 const SET_BOOKINGS = "SET_BOOKINGS";
 const CREATE_BOOKINGS = "CREATE_BOOKINGS";
+const REMOVE_ALL_BOOKINGS = 'REMOVE_ALL_BOOKINGS';
 
 //Selectors
 export const MODULE_NAME = "bookings";
@@ -26,8 +27,13 @@ export function reducer(state = initialState, { type, payload }) {
     case CREATE_BOOKINGS:
       return {
         ...state,
-        bookings: [payload, ...state.bookings],
+        bookings: [ payload,...state.bookings],
       };
+      case REMOVE_ALL_BOOKINGS: 
+      return {
+        ...state,
+        bookings: []
+      }
     default:
       return state;
   }
@@ -41,6 +47,10 @@ export const createBookings = (payload) => ({
   type: CREATE_BOOKINGS,
   payload,
 });
+export const removeAllBookings = (payload) => ({
+  type: REMOVE_ALL_BOOKINGS,
+  payload,
+});
 
 export const createBook = (studio, fields) => async (dispatch, getState) => {
   try {
@@ -48,21 +58,20 @@ export const createBook = (studio, fields) => async (dispatch, getState) => {
     const authStatus = selectAuthStatus(state);
     if (authStatus) {
       const userID = selectUserData(state).userID;
-      const { id, studioName, imgArray } = studio;
+      const { id, studioName, imgArray, rentPrice } = studio;
       const bookingData = {
         studioID: id,
         studioName,
         imgArray,
-        userID,
+        rentPrice,
         fields: {
-          city: fields.city,
+          city: studio.locatedCity,
           date: fields.date.toString(),
           endTime: fields.endTime.toString(),
           startTime: fields.startTime.toString(),
         },
       };
-      const data = await (await fbApp.data.ref(`bookings`).push(bookingData))
-        .key;
+      const data = await (await fbApp.data.ref(`bookings/${userID}`).push(bookingData)).key;
 
       dispatch(
         createBookings({
@@ -74,35 +83,40 @@ export const createBook = (studio, fields) => async (dispatch, getState) => {
       console.log("need to login");
     }
 
-    //dispatch(createBookings());
   } catch (error) {
     console.log(error, "createBook");
   }
 };
 
-export const loadBook = () => async (dispatch, getState) => {
+export const loadBook = (setRefreshed) => async (dispatch, getState) => {
   try {
     const state = getState();
     const authStatus = selectAuthStatus(state);
-if(authStatus){
-    const userID = selectUserData(state).userID;
-    console.log(userID)
-    const data = (await fbApp.data.ref(`bookings`).once("value")).val();
-    let dataArray = [];
-    for (let item in data) {
-      dataArray.push({
-        id: item,
-        ...data[item],
-      });
+    if (authStatus) {
+      const userID = selectUserData(state).userID;
+      const data = (
+        await fbApp.data.ref(`bookings/${userID}`).once("value")
+      ).val();
+
+      
+      let dataArray = [];
+      for (let item in data) {
+        dataArray.push({
+          id: item,
+          ...data[item],
+        });
+      }
+      
+      // const userBookings = dataArray.filter(
+      //   (booking) => booking.userID == userID
+      // );
+      dispatch(setBookings(dataArray.reverse()));
+      if(setRefreshed) {
+        setRefreshed(false)
+      }
+    } else {
+      dispatch(setBookings([]));
     }
-    const userBookings = dataArray.filter(
-      (booking) => booking.userID == userID
-    );
-    dispatch(setBookings(userBookings));
-}
-else{
-  dispatch(setBookings([]))
-}
   } catch (error) {
     console.log(error, "loadBook");
   }
