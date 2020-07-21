@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     marginRight: 8
   },
   row: {
+    marginLeft: 6,
     paddingHorizontal: 10,
     flexDirection: "row", 
     alignItems: "center",

@@ -2,14 +2,14 @@ import React from "react";
 import { FlatList, StyleSheet, View, TouchableOpacity } from "react-native";
 import { StudioHistoryItem } from "./StudioHistoryItem";
 
-export const StudioHistoryList = ({onPress, data}) => {
+export const StudioHistoryList = ({ data}) => {
   return (
     <View style={styles.container} > 
    
         <FlatList
           data={data}
-          renderItem={({ item }) => <StudioHistoryItem key={item.name} onPress={onPress} {...item} />}
-          keyExtractor={(item)=> item.name}
+          renderItem={({ item }) => <StudioHistoryItem key={item.id} {...item} />}
+          keyExtractor={(item)=> item.id}
         />
      
     </View>
@@ -18,6 +18,7 @@ export const StudioHistoryList = ({onPress, data}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 60
+    marginBottom: 60,
+    marginTop: 15,
   }
 })

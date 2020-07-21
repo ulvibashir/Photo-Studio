@@ -4,11 +4,18 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import { CustomText } from "../components";
 import { Layout } from "../commons";
-import { COLORS } from "../styles";
+import { COLORS, ICONS } from "../styles";
+import { TAB_ICONS } from "../styles/ICONS";
 
-export const StudioHoursScreen = (params) => {
+export const StudioHoursScreen = ({
+  route: {
+    params: { fields, hours, studioName },
+  },
+}) => {
+  const date = new Date(fields.date);
+  const fullDate = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`;
   return (
-    <Layout cancel={true} title='Studios'>
+    <Layout cancel={true} title={studioName}>
       <LinearGradient
         style={styles.bgGradient}
         colors={[COLORS.BG_GRADIENT_1, COLORS.BG_GRADIENT_2]}
@@ -17,16 +24,30 @@ export const StudioHoursScreen = (params) => {
       />
       <View style={styles.container}>
         <View style={styles.row}>
-          <CustomText style={styles.balance}>Bought: </CustomText>
+          <CustomText weight="bold" style={styles.balance}>
+            Bought:
+          </CustomText>
+          <CustomText style={styles.date}>{fullDate}</CustomText>
+          <CustomText weight="light" style={styles.balance}>
+            {hours} h
+          </CustomText>
         </View>
         <View style={styles.row}>
-          <CustomText style={styles.balance}>Spent: </CustomText>
+          <CustomText weight="bold" style={styles.balance}>
+            Spent:
+          </CustomText>
+          <CustomText style={styles.date}> </CustomText>
+          <CustomText weight="light" style={styles.balance}>
+            0 h
+          </CustomText>
         </View>
         <View style={styles.row}>
-          <CustomText style={styles.balance}>Balance: </CustomText>
+          <CustomText weight="bold" style={styles.balance}>
+            Balance:
+          </CustomText>
           <View style={styles.imgbalance}>
-            <Image />
-            <CustomText style={styles.balance}>4 h </CustomText>
+            <Image style={styles.icon} source={TAB_ICONS.wallet.inActive} />
+            <CustomText style={styles.balance}>{hours} h </CustomText>
           </View>
         </View>
       </View>
@@ -46,19 +67,30 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     borderBottomWidth: 1,
-    borderColor: "grey",
+    borderColor: "#5a615a",
   },
   balance: {
     fontSize: 16,
     padding: 16,
     color: "white",
-
-    fontFamily: "RobotoBold",
+  },
+  date: {
+    fontSize: 14,
+    padding: 16,
+    color: "white",
+    marginHorizontal: 10,
+    color: "lightgray",
   },
   imgbalance: {
     backgroundColor: COLORS.HEADER_COLOR,
+    flexDirection: "row",
     alignItems: "center",
-    borderLeftColor: "grey",
+    borderLeftColor: "#5a615a",
     borderLeftWidth: 1,
+    paddingLeft: 20,
+  },
+  icon: {
+    width: 20,
+    height: 20,
   },
 });

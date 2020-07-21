@@ -1,6 +1,7 @@
 import fbApp from "../firebaseInit";
 import * as firebase from "firebase";
 
+
 //Action types
 const SET_AUTH_SUCCESS = "SET_AUTH_SUCCESS";
 const SET_AUTH_STATUS = "SET_AUTH_STATUS";
@@ -14,6 +15,7 @@ export const MODULE_NAME = "auth";
 export const selectAuthStatus = (state) => state[MODULE_NAME].status;
 export const selectUserData = (state) => state[MODULE_NAME].userData;
 export const selectUsersCards = (state) => state[MODULE_NAME].userData.cards;
+export const selectUserID = (state) => state[MODULE_NAME].userData.userID;
 export const selectAuthError = (state) => state[MODULE_NAME].error;
 
 // Reducer
@@ -95,10 +97,7 @@ export function reducer(state = initialState, { type, payload }) {
 }
 
 // Action creators
-export const setAuthStatus = (payload) => ({
-  type: SET_AUTH_STATUS,
-  payload,
-});
+
 export const setAuthSuccess = (payload) => ({
   type: SET_AUTH_SUCCESS,
   payload,
@@ -184,6 +183,7 @@ export const signUp = ({ email, password, name, surname }) => async (
 export const logOut = () => (dispatch) => {
   try {
     fbApp.auth.signOut();
+  
     dispatch(setAuthLogOut());
   } catch (error) {
     console.log(error, "logout");
