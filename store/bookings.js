@@ -27,7 +27,7 @@ export function reducer(state = initialState, { type, payload }) {
     case CREATE_BOOKINGS:
       return {
         ...state,
-        bookings: [payload, ...state.bookings],
+        bookings: [ payload,...state.bookings],
       };
       case REMOVE_ALL_BOOKINGS: 
       return {
@@ -110,7 +110,7 @@ export const loadBook = (setRefreshed) => async (dispatch, getState) => {
       // const userBookings = dataArray.filter(
       //   (booking) => booking.userID == userID
       // );
-      dispatch(setBookings(dataArray));
+      dispatch(setBookings(dataArray.reverse()));
       if(setRefreshed) {
         setRefreshed(false)
       }

@@ -32,6 +32,7 @@ export const BookingsInfoScreen = ({
           </Text>
           <Text style={styles.priceText} weight="medium">{item.rentPrice}$</Text>
         <GradientBTN title="OK" onPress={navigation.goBack} style={styles.btn}/>
+        <Text style={styles.additional}>*For additional information please contact studio administrator</Text>
         </View>
       </View>
     </Layout>
@@ -78,5 +79,10 @@ btn: {
   width: Dimensions.get('window').width - 40,
   alignSelf: 'center',
   marginTop: 20
+},
+additional: {
+  textAlign: "center",
+  color: 'gray',
+  marginTop: 10
 }
 })

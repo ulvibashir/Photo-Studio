@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import uuid from 'react-uuid'
 import { CustomText } from "../components";
 import { Layout } from "../commons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -19,7 +20,7 @@ const notifications = [
 export const NotificationScreen = (params) => {
   
   const [options, setOptions] = useState(notifications);
-  console.log(options);
+  
   const toggleSwitch = (value) => {
     setOptions(
       options.map((option) => {
@@ -45,6 +46,7 @@ export const NotificationScreen = (params) => {
         />
         <FlatList
           data={options}
+          keyExtractor={() => uuid()}
           renderItem={({ item }) => (
             <View  style={styles.row}>
               <CustomText style={styles.label}>{item.label}</CustomText>

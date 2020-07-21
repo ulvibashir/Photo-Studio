@@ -122,7 +122,9 @@ export const Account = connect(mapStateToProps, { logOut })(
               {item.screens.map((screen, i) => (
                 <TouchableOpacity
                   key={i}
-                  onPress={() => navigation.navigate(screen.route)}
+                  onPress={() => {
+                    if (screen.route) navigation.navigate(screen.route);
+                  }}
                 >
                   <Text style={styles.menuContent}>{screen.name}</Text>
                 </TouchableOpacity>

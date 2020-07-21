@@ -1,4 +1,5 @@
 export const dummyCities = [
+  "All",
   "Daxi",
   "Hongwansi",
   "Sekongkang Bawah",

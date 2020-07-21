@@ -17,7 +17,7 @@ export const BookingsScreen = connect(mapStateToProps, { loadBook })(
 
     useEffect(() => {
       loadBook();
-    }, [userID,bookings]);
+    }, [userID]);
 
     const onRefresh = () => {
       setRefreshed(true);
@@ -30,7 +30,7 @@ export const BookingsScreen = connect(mapStateToProps, { loadBook })(
       <Layout title="Bookings">
         <View style={styles.container}>
           <FlatList
-            data={bookings.slice(0).reverse()}
+            data={bookings}
             refreshing={refreshed}
             onRefresh={onRefresh}
             renderItem={({ item }) => <BookingItem item={item} onPress={() => onPressHandler(item)}/>}

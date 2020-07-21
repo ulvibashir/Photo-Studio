@@ -207,7 +207,6 @@ export const updateUser = (data) => async (dispatch) => {
       city,
       speciality,
     } = data;
-
     const user = (await fbApp.data.ref(`users/${uid}`).once("value")).val();
 
     const credential = firebase.auth.EmailAuthProvider.credential(

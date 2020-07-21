@@ -17,9 +17,17 @@ export const HomeScreen = connect(mapStateToProps, {getStudios})(({
   navigation,
   getStudios,
   studios,
-  fields
+  fields,
 }) => {
-
+  let filteredStudios = [];
+  const filterStudios = () => {
+    if(fields.city !== "All") {
+      filteredStudios = studios.filter(item => item.locatedCity === fields.city)
+    }else{
+      filteredStudios = studios;
+    }
+  }
+  filterStudios();
   useEffect(() => {
     getStudios();
   }, [])
@@ -41,11 +49,11 @@ export const HomeScreen = connect(mapStateToProps, {getStudios})(({
           <View style={[styles.filterItem, styles.border]}>
             <Text style={styles.filterText}>{fields.startTime && fields.endTime ? fullTime(fields.startTime,fields.endTime) : '--:--'}</Text>
           </View>
-          <TouchableOpacity style={styles.filterItem}>
+          <TouchableOpacity style={styles.filterItem} onPress={navigation.goBack}>
             <Text style={styles.filterText}>Filter</Text>
           </TouchableOpacity>
         </View>
-        <StudioListBody data={studios}/>
+        <StudioListBody data={filteredStudios}/>
       </View>
     </Layout>
   );

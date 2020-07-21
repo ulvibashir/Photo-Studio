@@ -14,6 +14,14 @@ export const StudioHoursScreen = ({
 }) => {
   const date = new Date(fields.date);
   const fullDate = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`;
+
+  // const endTime = new Date(fields.endTime).getHours();
+  // const startTime = new Date(fields.startTime).getHours();
+  // const endMinute = new Date(fields.endTime).getMinutes();
+  // const startMinute = new Date(fields.startTime).getMinutes();
+  // const hours = endTime - startTime;
+  // const minutes = endMinute - startMinute
+  
   return (
     <Layout cancel={true} title={studioName}>
       <LinearGradient
