@@ -11,16 +11,23 @@ import { ICONS } from "../styles";
 import { CardItem } from "./CardItem";
 import { deleteUserCard } from "../store/auth";
 
-export const CardList = ({ onPress, cards , deleteUserCard}) => {
+export const CardList = ({ onPress, cards, deleteUserCard, addNewCard }) => {
   return (
     <View>
       {!!cards.length && (
         <FlatList
           data={cards.slice(0).reverse()}
           keyExtractor={(item) => item.number}
-          renderItem={({ item }) => <CardItem key={item.number} card={item}  onPressIcon={()=>deleteUserCard(item.id)} />}
+          renderItem={({ item }) => (
+            <CardItem
+              key={item.number}
+              card={item}
+              onPress={onPress}
+              onPressIcon={() => deleteUserCard(item.id)}
+            />
+          )}
           ListFooterComponent={
-            <TouchableOpacity style={styles.add} onPress={onPress}>
+            <TouchableOpacity style={styles.add} onPress={addNewCard}>
               <Image source={ICONS.add} style={styles.icon} />
               <CustomText style={styles.addTitle}>Add new card</CustomText>
             </TouchableOpacity>
@@ -43,7 +50,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     width: 20,
-    height: 20,
+    height: 25,
     marginRight: 12,
   },
   add: {

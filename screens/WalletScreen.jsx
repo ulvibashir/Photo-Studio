@@ -55,9 +55,9 @@ export const WalletScreen = connect(mapStateToProps, {
 
     const navigateCardForm = () => {
       if (status) {
-        navigation.navigate("form-screen");
+        navigation.navigate("form-screen",{edit: false});
       } else {
-        Alert.alert("Please sign in or sign up", "", [
+        Alert.alert("In order to add card, please sign in or sign up", "", [
           {
             text: "OK",
             onPress: () => navigation.navigate("settings-stack"),
@@ -70,7 +70,7 @@ export const WalletScreen = connect(mapStateToProps, {
       }
     };
     const handleDelete = (id) => {
-      Alert.alert("Do you want to remove this card from your wallet?", "", [
+      Alert.alert("Confirmation", "Do you want to remove this card from your wallet?", [
         { text: "OK", onPress: () => deleteUserCard(id) },
         { text: "Cancel", onPress: () => console.log("cancel") },
       ]);
@@ -118,10 +118,9 @@ export const WalletScreen = connect(mapStateToProps, {
             <CardList
               key={() => uuid()}
               cards={cards}
+              addNewCard={navigateCardForm}
               deleteUserCard={handleDelete}
-              onPress={() => {
-                navigateCardForm();
-              }}
+              
             />
           ) : (
             <View style={styles.btnContainer}>
