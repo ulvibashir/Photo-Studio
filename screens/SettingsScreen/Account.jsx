@@ -93,10 +93,11 @@ export const Account = connect(mapStateToProps, { logOut })(
               start={[0, 0.5]}
               end={[1, 0.5]}
             >
-
-              <TouchableOpacity onPress={()=>navigation.navigate('contracts-screen')} style={styles.contractsBtn}>
- 
-                <Image source={ICONS.contracts} style={styles.icon}/>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("contracts-screen")}
+                style={styles.contractsBtn}
+              >
+                <Image source={ICONS.contracts} style={styles.icon} />
 
                 <Text style={styles.btnTitle} weight="medium">
                   Contracts
@@ -105,9 +106,10 @@ export const Account = connect(mapStateToProps, { logOut })(
             </LinearGradient>
 
             <GradientBTN
-            title="Support"
-            iconPath={ICONS.support}
-            style={styles.btn}/>
+              title="Support"
+              iconPath={ICONS.support}
+              style={styles.btn}
+            />
           </View>
         </View>
 
@@ -118,7 +120,10 @@ export const Account = connect(mapStateToProps, { logOut })(
             <View>
               <Text style={styles.menuHeader}>{item.heading}</Text>
               {item.screens.map((screen, i) => (
-                <TouchableOpacity key={i} onPress={()=>navigation.navigate(screen.route)}>
+                <TouchableOpacity
+                  key={i}
+                  onPress={() => navigation.navigate(screen.route)}
+                >
                   <Text style={styles.menuContent}>{screen.name}</Text>
                 </TouchableOpacity>
               ))}
@@ -151,7 +156,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: COLORS.HEADER_COLOR,
     height: 280,
-    marginBottom: 8,
+    
   },
   imgContainer: {
     width: 70,
@@ -199,7 +204,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 50,
     borderColor: "transparent",
-    flexDirection: 'row',
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -217,12 +222,11 @@ const styles = StyleSheet.create({
   btnTitle: {
     fontSize: 15,
     color: "white",
-    paddingLeft: 5
+    paddingLeft: 5,
   },
-  icon :{
+  icon: {
     width: 20,
     height: 20,
-    
   },
   cricleGradient: {
     margin: 1,
@@ -230,17 +234,17 @@ const styles = StyleSheet.create({
   },
   menu: {
     paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingTop: 15,
   },
   menuHeader: {
     fontSize: 21,
     fontWeight: "bold",
-    paddingVertical: 7,
+    paddingVertical: 9,
     color: "white",
   },
   menuContent: {
     fontSize: 16,
-    paddingVertical: 9,
+    paddingVertical: 6,
     color: "white",
   },
   logOut: {

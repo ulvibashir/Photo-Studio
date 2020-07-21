@@ -4,11 +4,11 @@ import { CustomText } from "./CustomText";
 import { COLORS, ICONS } from "../styles";
 import { useNavigation } from "@react-navigation/native";
 
-export const CardItem = ({  card , onPressIcon }) => {
+export const CardItem = ({  card , onPressIcon , onPress}) => {
   const  navigation = useNavigation()
   const name = card.cardType + ' - ' + card.number.slice(0,4)
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <View style={styles.row}>
         <Image source={ICONS.card} style={styles.icon} />
         <CustomText weight="bold" style={styles.name}>
@@ -21,7 +21,7 @@ export const CardItem = ({  card , onPressIcon }) => {
         <Image source={ICONS.options} style={styles.options} />
       </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

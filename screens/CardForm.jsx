@@ -9,20 +9,15 @@ import { COLORS } from "../styles";
 import { Layout } from "../commons";
 import { updateUserCards, selectUsersCards } from "../store/auth";
 
-
 const pickerValues = [
   { label: "Visa", value: "Visa" },
   { label: "MasterCard", value: "MasterCard" },
   { label: "Maestro", value: "Maestro" },
 ];
 
-
 export const CardForm = connect(null, { updateUserCards })(
-  ({
-    updateUserCards,
-    navigation,
-    
-  }) => {
+  ({ updateUserCards, navigation,  }) => {
+  
     const [error, setError] = useState("");
     const [fields, setFields] = useState({
       nameOnCard: "",
@@ -30,29 +25,54 @@ export const CardForm = connect(null, { updateUserCards })(
       expiration: "",
       cvv: "",
       cardType: "Visa",
-      
     });
-   
     const [preferred, setPreferred] = useState(false);
+    const checkIsNaN = (name, value) => {
+      const checkName = name !== "nameOnCard" && "cardType";
+      if (+value < 0 || (isNaN(value) && checkName)) return;
+      return true;
+    };
+    const handleExpirationDate = ( value) => {
+      if (value.length === 2 && !value.includes("/")) {
+        value += "/";
+      }
 
-    const handleFieldChange = (name, value) => {
       setFields((fields) => ({
         ...fields,
-        [name]: value,
+        expiration: value,
       }));
     };
+
+    const handleFieldChange = (name, value) => {
+      if (checkIsNaN(name,value)) {
+        setFields((fields) => ({
+          ...fields,
+          [name]: value,
+        }));
+      }
+      return false
+    };
     const validation = () => {
-      for (let key of Object.keys(fields) ) {
-        if (key!== 'cardType' && fields[key].trim() === "") {
+      for (let key of Object.keys(fields)) {
+        if (
+          (key !== "cardType" && fields[key].trim() === "") ||
+          fields.number.length < 16 ||
+          fields.cvv.length < 3
+        ) {
           setError(`Please, write your data correctly.`);
           return false;
         }
+      }
+
+      if (+fields.expiration.slice(0, 2) > 31) {
+        setError("Invalid date, please try again.");
+        return false;
       }
       return true;
     };
     const addCard = () => {
       if (validation()) {
-        updateUserCards({...fields,preferred});
+        updateUserCards({ ...fields, preferred });
         navigation.goBack();
         return true;
       }
@@ -82,7 +102,7 @@ export const CardForm = connect(null, { updateUserCards })(
         maxLength: 5,
         keyboardType: "numeric",
         onChangeText: (v) => {
-          handleFieldChange("expiration", v);
+          handleExpirationDate( v);
         },
       },
       {
@@ -124,9 +144,7 @@ export const CardForm = connect(null, { updateUserCards })(
               trackColor={{ false: "#767577", true: "#fff" }}
               thumbColor={preferred ? COLORS.BTN_GRADIENT_1 : "white"}
               ios_backgroundColor="#3e3e3e"
-              onValueChange={() =>
-                setPreferred((v) => !v)
-              }
+              onValueChange={() => setPreferred((v) => !v)}
               value={preferred}
             />
           </View>

@@ -35,12 +35,18 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
       city,
       speciality,
     });
-
+    const checkIsNaN = (name, value) => {
+      const checkName = name === "phone";
+      if (+value < 0 || (isNaN(value) && checkName)) return;
+      return true;
+    };
     const handleFieldChange = (name, value) => {
-      setFields((fields) => ({
+      if(checkIsNaN(name))
+     { setFields((fields) => ({
         ...fields,
         [name]: value,
-      }));
+      }));}
+      return false
     };
 
     const handleUpdate = () => {
@@ -101,7 +107,7 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
       {
         label: "Preferred City",
         value: "city",
-        keyboardType: 'numeric',
+        keyboardType: 'default',
         onChangeText: (v) => {
           handleFieldChange("city", v);
         },
@@ -109,7 +115,7 @@ export const EditUser = connect(mapStateToProps, { updateUser })(
       {
         label: "I am a ",
         value: "speciality",
-        keyboardType: 'numeric',
+        keyboardType: 'default',
         onChangeText: (v) => {
           handleFieldChange("speciality", v);
         },
