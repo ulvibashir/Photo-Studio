@@ -1,6 +1,6 @@
 import fbApp from "../firebaseInit";
 import * as firebase from "firebase";
-import { removeAllBookings } from "./bookings";
+// import { removeAllBookings } from "./bookings";
 
 
 //Action types

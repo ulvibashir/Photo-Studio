@@ -16,7 +16,7 @@ export const selectFavorites = (state) => state[MODULE_NAME].favorites;
 export const selectFields = (state) => state[MODULE_NAME].fields;
 
 const initialState = {
-  welcomeScreenEnabled: false,
+  welcomeScreenEnabled: true,
   studios: [],
   favorites: [],
   fields: {
