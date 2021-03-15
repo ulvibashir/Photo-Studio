@@ -1,6 +1,7 @@
 import fbApp from "../firebaseInit";
 import * as firebase from "firebase";
 import { selectUserData, selectAuthStatus } from "./auth";
+import { Alert } from "react-native";
 
 //Action types
 const SET_BOOKINGS = "SET_BOOKINGS";
@@ -80,6 +81,7 @@ export const createBook = (studio, fields) => async (dispatch, getState) => {
         })
       );
     } else {
+      Alert.alert('Please Login')
       console.log("need to login");
     }
 
